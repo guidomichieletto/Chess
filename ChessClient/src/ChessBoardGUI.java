@@ -3,7 +3,8 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 public class ChessBoardGUI extends JFrame {
     private static final int BOARD_SIZE = 8;
     private final Map<String, JLabel> pieceImages = new HashMap<>();
@@ -15,7 +16,7 @@ public class ChessBoardGUI extends JFrame {
 
     public ChessBoardGUI() {
         setTitle("Scacchiera");
-        setSize(1100, 1100);
+        setSize(800, 800); //dimensione da scegliere in base al dispositivo
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -110,10 +111,17 @@ public class ChessBoardGUI extends JFrame {
         icon = new ImageIcon(image);
 
         JLabel piece = new JLabel(icon);
+        piece.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println("Pezzo cliccato: " + pieceName);
+                System.out.println("Posizione: " + (8 - row) + "," +
+                        (char)('A' + col));
+            }
+        });
         square.add(piece, BorderLayout.CENTER);
 
         pieceImages.put(row + "," + col, piece);
-
     }
 
     private JPanel createRowNumbers() {
