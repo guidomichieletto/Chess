@@ -115,8 +115,10 @@ public class ChessBoardGUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 System.out.println("Pezzo cliccato: " + pieceName);
-                System.out.println("Posizione: " + (8 - row) + "," +
-                        (char)('A' + col));
+                System.out.println("Posizione: " + (8 - row) + "," + (char)('A' + col));
+            }
+            public void mouseEntered(MouseEvent e) {
+                piece.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             }
         });
         square.add(piece, BorderLayout.CENTER);
@@ -144,12 +146,5 @@ public class ChessBoardGUI extends JFrame {
             columnLabels.add(label);
         }
         return columnLabels;
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            ChessBoardGUI chessBoard = new ChessBoardGUI();
-            chessBoard.setVisible(true);
-        });
     }
 }
