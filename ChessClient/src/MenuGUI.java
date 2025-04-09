@@ -34,6 +34,9 @@ public class MenuGUI extends JFrame {
         JButton esci = new JButton("ESCI");
         esci.setPreferredSize(new Dimension(200, 50));
         add(esci, gbc);
+        esci.addActionListener(e -> {
+            System.exit(0);
+        });
     }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

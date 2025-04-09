@@ -4,7 +4,7 @@ import java.net.Socket;
 
 public class ClientTCP {
     private InetAddress indirizzo;
-    private final int porta = 1050;
+    private final int porta = 3030;
     public void messaggiConServer(){
         try {
             Socket s = new Socket(indirizzo, porta);

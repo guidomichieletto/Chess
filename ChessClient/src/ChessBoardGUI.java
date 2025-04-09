@@ -9,6 +9,8 @@ public class ChessBoardGUI extends JFrame {
     private static final int BOARD_SIZE = 8;
     private final Map<String, JLabel> pieceImages = new HashMap<>();
     private boolean areYouWhite = true;
+    JPanel boardPanel;
+    JPanel mainPanel;
 
     public void setAreYouWhite(boolean areYouWhite) {
         this.areYouWhite = areYouWhite;
@@ -21,11 +23,11 @@ public class ChessBoardGUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        JPanel boardPanel = new JPanel(new GridLayout(BOARD_SIZE, BOARD_SIZE));
+        boardPanel = new JPanel(new GridLayout(BOARD_SIZE, BOARD_SIZE));
         initializeBoard(boardPanel);
         placePieces(boardPanel);
 
-        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(createRowNumbers(), BorderLayout.WEST);
         mainPanel.add(createColumnLetters(), BorderLayout.NORTH);
         mainPanel.add(boardPanel, BorderLayout.CENTER);
@@ -94,6 +96,11 @@ public class ChessBoardGUI extends JFrame {
             addPieceToSquare(boardPanel, 0, 3, "King_white");
             addPieceToSquare(boardPanel, 7, 3, "King_black");
         }
+    }
+
+    private void movePiece(int startX, int startY, int endX, int endY, String nome){
+        boardPanel.remove(startX * BOARD_SIZE + startY);
+        addPieceToSquare(boardPanel,endX,endY,nome);
     }
 
     private void addPieceToSquare(JPanel boardPanel, int row, int col, String pieceName) {
