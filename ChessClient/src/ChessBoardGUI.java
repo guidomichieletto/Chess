@@ -12,11 +12,22 @@ public class ChessBoardGUI extends JFrame {
     JPanel boardPanel;
     JPanel mainPanel;
 
+    private JPanel selectedSquare = null;
+    private Color originalColor = null;
+    private String selectedName = null;
+
+    int arrayMovimento[] = new int[2];
+
+
     public void setAreYouWhite(boolean areYouWhite) {
         this.areYouWhite = areYouWhite;
     }
 
     public ChessBoardGUI() {
+        for(int i:arrayMovimento){
+            i = 0;
+        }
+
         setTitle("Scacchiera");
         setSize(800, 800); //dimensione da scegliere in base al dispositivo
         setLocationRelativeTo(null);
@@ -45,6 +56,22 @@ public class ChessBoardGUI extends JFrame {
                 } else {
                     square.setBackground(Color.LIGHT_GRAY);
                 }
+                int finalRow = row;
+                int finalCol = col;
+                square.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if (arrayMovimento[0] != 0 && arrayMovimento[1] == 0){
+                            arrayMovimento[1] = finalRow * BOARD_SIZE + finalCol;
+                            //movePiece(arrayMovimento[0], arrayMovimento[1]);
+                            arrayMovimento[0] = 0;
+                            arrayMovimento[1] = 0;
+                        }
+                        if (selectedSquare != null) {
+                            selectedSquare.setBackground(originalColor);
+                        }
+                    }
+                });
                 boardPanel.add(square);
                 isWhite = !isWhite;
             }
@@ -98,9 +125,16 @@ public class ChessBoardGUI extends JFrame {
         }
     }
 
-    private void movePiece(int startX, int startY, int endX, int endY, String nome){
-        boardPanel.remove(startX * BOARD_SIZE + startY);
-        addPieceToSquare(boardPanel,endX,endY,nome);
+    private void movePiece(int startX, int startY, int endX, int endY, String namePiece) {
+        JPanel startSquare = (JPanel) boardPanel.getComponent(startY * BOARD_SIZE + startX);
+
+        JLabel piece = (JLabel) startSquare.getComponent(0);
+
+        startSquare.removeAll();
+        startSquare.revalidate();
+        startSquare.repaint();
+
+        addPieceToSquare(boardPanel, endY, endX, piece.getName());
     }
 
     private void addPieceToSquare(JPanel boardPanel, int row, int col, String pieceName) {
@@ -123,6 +157,24 @@ public class ChessBoardGUI extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 System.out.println("Pezzo cliccato: " + pieceName);
                 System.out.println("Posizione: " + (8 - row) + "," + (char)('A' + col));
+
+                if (selectedSquare != null) {
+                    selectedSquare.setBackground(originalColor);
+                    selectedName = null;
+                }
+
+                if (selectedSquare == square) {
+                    selectedSquare = null;
+                    originalColor = null;
+                } else {
+                    if (arrayMovimento[0] == 0 && arrayMovimento[1] == 0){
+                        arrayMovimento[0] = index;
+                        selectedName = "img/" + pieceName + ".png";
+                    }
+                    originalColor = square.getBackground();
+                    square.setBackground(Color.YELLOW);
+                    selectedSquare = square;
+                }
             }
             public void mouseEntered(MouseEvent e) {
                 piece.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

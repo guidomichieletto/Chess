@@ -8,6 +8,7 @@ public class MenuGUI extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridBagLayout());
+        getContentPane().setBackground(Color.yellow);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 0, 10, 0);
@@ -19,6 +20,7 @@ public class MenuGUI extends JFrame {
         add(titolo, gbc);
 
         JButton gioca = new JButton("GIOCA");
+        gioca.setBackground(Color.pink);
         gioca.setPreferredSize(new Dimension(200, 50));
         add(gioca, gbc);
         gioca.addActionListener(e -> {
@@ -27,11 +29,8 @@ public class MenuGUI extends JFrame {
             dispose();
         });
 
-        JButton server = new JButton("SERVER");
-        server.setPreferredSize(new Dimension(200, 50));
-        add(server, gbc);
-
         JButton esci = new JButton("ESCI");
+        esci.setBackground(Color.ORANGE);
         esci.setPreferredSize(new Dimension(200, 50));
         add(esci, gbc);
         esci.addActionListener(e -> {
