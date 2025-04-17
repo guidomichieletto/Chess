@@ -16,7 +16,7 @@ public class ChessBoardGUI extends JFrame {
     private Color originalColor = null;
     private String selectedName = null;
 
-    int arrayMovimento[] = new int[2];
+    int[] arrayMovimento = new int[2];
 
 
     public void setAreYouWhite(boolean areYouWhite) {
@@ -61,15 +61,30 @@ public class ChessBoardGUI extends JFrame {
                 square.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        if (arrayMovimento[0] != 0 && arrayMovimento[1] == 0){
+                        if (arrayMovimento[0] != 0 && arrayMovimento[1] == 0) {
                             arrayMovimento[1] = finalRow * BOARD_SIZE + finalCol;
-                            //movePiece(arrayMovimento[0], arrayMovimento[1]);
+
+                            int startIndex = arrayMovimento[0];
+                            int endIndex = arrayMovimento[1];
+                            int startX = startIndex % BOARD_SIZE;
+                            int startY = startIndex / BOARD_SIZE;
+                            int endX = endIndex % BOARD_SIZE;
+                            int endY = endIndex / BOARD_SIZE;
+
+                            movePiece(startX, startY, endX, endY, selectedName);
+
                             arrayMovimento[0] = 0;
                             arrayMovimento[1] = 0;
-                        }
-                        if (selectedSquare != null) {
+
                             selectedSquare.setBackground(originalColor);
+                            selectedSquare = null;
+                            selectedName = null;
                         }
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        square.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                     }
                 });
                 boardPanel.add(square);
@@ -127,19 +142,30 @@ public class ChessBoardGUI extends JFrame {
 
     private void movePiece(int startX, int startY, int endX, int endY, String namePiece) {
         JPanel startSquare = (JPanel) boardPanel.getComponent(startY * BOARD_SIZE + startX);
+        JPanel endSquare = (JPanel) boardPanel.getComponent(endY * BOARD_SIZE + endX);
 
-        JLabel piece = (JLabel) startSquare.getComponent(0);
-
+        // Rimuove il pezzo dalla casella di partenza
         startSquare.removeAll();
         startSquare.revalidate();
         startSquare.repaint();
 
-        addPieceToSquare(boardPanel, endY, endX, piece.getName());
+        // Rimuove qualsiasi pezzo nella casella di destinazione (cattura!)
+        endSquare.removeAll();
+        endSquare.revalidate();
+        endSquare.repaint();
+
+        // Aggiunge il pezzo alla nuova posizione
+        addPieceToSquare(boardPanel, endY, endX, namePiece);
     }
+
+
 
     private void addPieceToSquare(JPanel boardPanel, int row, int col, String pieceName) {
         int index = row * BOARD_SIZE + col;
         JPanel square = (JPanel) boardPanel.getComponent(index);
+
+        square.removeAll(); // <--- AGGIUNTO: rimuove eventuali pezzi già presenti
+        square.revalidate(); // <--- forza aggiornamento
 
         ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("img/" + pieceName + ".png")));
 
@@ -155,31 +181,56 @@ public class ChessBoardGUI extends JFrame {
         piece.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println("Pezzo cliccato: " + pieceName);
-                System.out.println("Posizione: " + (8 - row) + "," + (char)('A' + col));
-
                 if (selectedSquare != null) {
-                    selectedSquare.setBackground(originalColor);
-                    selectedName = null;
+                    if (selectedSquare == square) {
+                        // Hai cliccato lo stesso pezzo → deseleziona
+                        selectedSquare.setBackground(originalColor);
+                        selectedSquare = null;
+                        selectedName = null;
+                        arrayMovimento[0] = 0;
+                        return;
+                    } else {
+                        // Controlla se il pezzo cliccato è di un colore diverso
+                        if ((selectedName.contains("_white") && pieceName.contains("_black")) ||
+                                (selectedName.contains("_black") && pieceName.contains("_white"))) {
+
+                            // Rimuovi il pezzo cliccato
+                            square.removeAll();
+                            square.revalidate();
+                            square.repaint();
+
+                            // Sposta il pezzo selezionato nella nuova posizione
+                            int startIndex = arrayMovimento[0];
+                            int startX = startIndex % BOARD_SIZE;
+                            int startY = startIndex / BOARD_SIZE;
+
+                            movePiece(startX, startY, col, row, selectedName);
+
+                            // Resetta la selezione
+                            selectedSquare.setBackground(originalColor);
+                            selectedName = null;
+                            arrayMovimento[0] = 0;
+                        } else {
+                            // Stai cambiando pezzo selezionato → resetta il precedente
+                            selectedSquare.setBackground(originalColor);
+                        }
+                    }
                 }
 
-                if (selectedSquare == square) {
-                    selectedSquare = null;
-                    originalColor = null;
-                } else {
-                    if (arrayMovimento[0] == 0 && arrayMovimento[1] == 0){
-                        arrayMovimento[0] = index;
-                        selectedName = "img/" + pieceName + ".png";
-                    }
-                    originalColor = square.getBackground();
-                    square.setBackground(Color.YELLOW);
-                    selectedSquare = square;
-                }
+                // Seleziona il nuovo pezzo
+                selectedSquare = square;
+                originalColor = square.getBackground();
+                selectedName = pieceName;
+                arrayMovimento[0] = row * BOARD_SIZE + col;
+
+                square.setBackground(Color.YELLOW);
             }
+
             public void mouseEntered(MouseEvent e) {
                 piece.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             }
         });
+
         square.add(piece, BorderLayout.CENTER);
 
         pieceImages.put(row + "," + col, piece);
