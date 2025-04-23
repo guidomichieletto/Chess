@@ -1,80 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="dc8f3b6a-aca6-4349-959c-c8d400e118a1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/ChessServer.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessClient/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessClient/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessClient/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessClient/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessServer/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/ChessServer/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessServer/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessServer/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessServer/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessServer/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessServer/.idea/vcs.xml" beforeDir="false" />
-    </list>
+    <list default="true" id="f83ee9c7-faa9-43d1-8246-ec3e42b64fe3" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;guidomichieletto&quot;
-  }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/guidomichieletto/ChessServer.git&quot;,
-    &quot;accountId&quot;: &quot;8e0b3164-95fc-4593-968d-2e502d41be3e&quot;
-  }
-}</component>
-  <component name="ProjectColorInfo">{
-  &quot;customColor&quot;: &quot;&quot;,
-  &quot;associatedIndex&quot;: 8
-}</component>
-  <component name="ProjectId" id="2w7ujP25Ue0fRXpJE1b1rNTMb3N" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="2w8dNL48LclJFJbnl6mm9HTrvcs" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.Main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/guido.michieletto/IdeaProjects/Chess"
+    "kotlin-language-version-configured": "true"
   }
 }]]></component>
-  <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="Chess" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="Chess" />
-      <option name="filePath" />
-      <method v="2" />
-    </configuration>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="dc8f3b6a-aca6-4349-959c-c8d400e118a1" name="Changes" comment="" />
-      <created>1745405068956</created>
+      <changelist id="f83ee9c7-faa9-43d1-8246-ec3e42b64fe3" name="Changes" comment="" />
+      <created>1745427094747</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1745405068956</updated>
+      <updated>1745427094747</updated>
     </task>
     <servers />
   </component>
