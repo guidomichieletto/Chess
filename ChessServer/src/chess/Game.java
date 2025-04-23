@@ -1,0 +1,79 @@
+package chess;
+
+import chess.pieces.*;
+
+import java.awt.Point;
+
+public class Game {
+    public static final int COLS = 8;
+    public static final int ROWS = 8;
+
+    private Color currentPlayer = Color.WHITE;
+    private Piece[][] board = new Piece[COLS][ROWS];
+    private boolean started = false;
+
+    public Game() {
+        // chess.Game init
+        initFirstRow(0, Color.BLACK);
+        for(int i = 0; i < COLS; i++) board[i][1] = new Pawn(Color.BLACK);
+        initFirstRow(7, Color.WHITE);
+        for(int i = 0; i < COLS; i++) board[i][6] = new Pawn(Color.WHITE);
+    }
+
+    private void initFirstRow(int row, Color color) {
+        board[0][row] = new Rook(color);
+        board[1][row] = new Knight(color);
+        board[2][row] = new Bishop(color);
+        board[3][row] = new Queen(color);
+        board[4][row] = new King(color);
+        board[5][row] = new Bishop(color);
+        board[6][row] = new Knight(color);
+        board[7][row] = new Rook(color);
+    }
+
+    public boolean isStarted() {
+        return started;
+    }
+
+    public Color getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void start() {
+        started = true;
+    }
+
+    public Piece getPiece(int x, int y) {
+        return board[x][y];
+    }
+
+    public void movePiece(Point start, Point end) throws Exception {
+        if(board[start.x][start.y] == null) throw new Exception("Nessuna pedina sulla cella selezionata");
+
+        // Check if the piace can reach the end cell
+        if(!board[start.x][start.y].legalMove(start, end)) throw new Exception("Movimento non ammesso");
+
+        board[end.x][end.y] = board[start.x][start.y];
+        board[start.x][start.y] = null;
+    }
+
+    private void nextTurn() {
+        if(currentPlayer == Color.WHITE) currentPlayer = Color.BLACK;
+        else currentPlayer = Color.WHITE;
+    }
+
+    public String toCSV() {
+        String str = "";
+
+        for(int y = 0; y < board.length; y++) {
+            for(int x = 0; x < board.length; x++) {
+                if(board[x][y] != null) str += Character.toString(board[x][y].getColor().symbol) + "," + Character.toString(board[x][y].getSymbol()) + ";";
+                else str += ",";
+            }
+
+            str += '\n';
+        }
+
+        return str;
+    }
+}
