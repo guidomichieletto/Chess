@@ -17,6 +17,9 @@ public class ClientConnection extends Thread {
         this.game = game;
         this.player = player;
     }
+    public void sendReadyMessage() {
+        out.println("READY");
+    }
 
     @Override
     public void run() {
@@ -87,6 +90,7 @@ public class ClientConnection extends Thread {
 
         try {
             game.movePiece(start, end);
+            game.nextTurn();
             out.println("OK");
         } catch (Exception ex) {
             out.println("UNALLOWEDMOVE");

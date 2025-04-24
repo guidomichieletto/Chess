@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class MenuGUI extends JFrame {
     public MenuGUI() {
@@ -24,10 +25,38 @@ public class MenuGUI extends JFrame {
         gioca.setPreferredSize(new Dimension(200, 50));
         add(gioca, gbc);
         gioca.addActionListener(e -> {
-            ChessBoardGUI chessBoardGUI = new ChessBoardGUI();
-            chessBoardGUI.setVisible(true);
-            dispose();
+            ClientTCP client = new ClientTCP();
+            boolean connected = client.connect("localhost", 3030);
+
+            if (connected) {
+                WaitingScreen waitingScreen = new WaitingScreen();
+                waitingScreen.setVisible(true);
+
+                // Thread per ascoltare il messaggio "READY" dal server
+                new Thread(() -> {
+                    try {
+                        String response;
+                        while ((response = client.receiveMessage()) != null) {
+                            if ("READY".equals(response)) {
+                                SwingUtilities.invokeLater(() -> {
+                                    waitingScreen.dispose();
+                                    ChessBoardGUI chessBoardGUI = new ChessBoardGUI(client);
+                                    chessBoardGUI.setVisible(true);
+                                });
+                                break;
+                            }
+                        }
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }).start();
+
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Impossibile connettersi al server.", "Errore", JOptionPane.ERROR_MESSAGE);
+            }
         });
+
 
         JButton esci = new JButton("ESCI");
         esci.setBackground(Color.ORANGE);

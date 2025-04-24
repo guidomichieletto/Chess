@@ -57,7 +57,7 @@ public class Game {
         board[start.x][start.y] = null;
     }
 
-    private void nextTurn() {
+    public void nextTurn() {
         if(currentPlayer == Color.WHITE) currentPlayer = Color.BLACK;
         else currentPlayer = Color.WHITE;
     }

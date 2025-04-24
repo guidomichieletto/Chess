@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -17,13 +18,9 @@ public class ChessBoardGUI extends JFrame {
     private String selectedName = null;
 
     int[] arrayMovimento = new int[2];
-
-
-    public void setAreYouWhite(boolean areYouWhite) {
-        this.areYouWhite = areYouWhite;
-    }
-
-    public ChessBoardGUI() {
+    private ClientTCP client;
+    public ChessBoardGUI(ClientTCP client) {
+        this.client = client;
         for(int i:arrayMovimento){
             i = 0;
         }
@@ -45,6 +42,30 @@ public class ChessBoardGUI extends JFrame {
 
         add(mainPanel, BorderLayout.CENTER);
     }
+
+
+    private void movePiece(int startX, int startY, int endX, int endY, String namePiece) {
+        // Invia la mossa al server
+        client.sendMessage("MOVE," + startX + "," + startY + "," + endX + "," + endY);
+
+        try {
+            String response = client.receiveMessage();
+            if ("OK".equals(response)) {
+                // Aggiorna la GUI
+                movePiecee(startX,startY,endX,endY,namePiece);
+            }else {
+                JOptionPane.showMessageDialog(this, "Mossa non valida: " + response, "Errore", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Errore nella comunicazione con il server.", "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+
+    public void setAreYouWhite(boolean areYouWhite) {
+        this.areYouWhite = areYouWhite;
+    }
+
 
     private void initializeBoard(JPanel boardPanel) {
         boolean isWhite = true;
@@ -140,7 +161,7 @@ public class ChessBoardGUI extends JFrame {
         }
     }
 
-    private void movePiece(int startX, int startY, int endX, int endY, String namePiece) {
+    private void movePiecee(int startX, int startY, int endX, int endY, String namePiece) {
         JPanel startSquare = (JPanel) boardPanel.getComponent(startY * BOARD_SIZE + startX);
         JPanel endSquare = (JPanel) boardPanel.getComponent(endY * BOARD_SIZE + endX);
 

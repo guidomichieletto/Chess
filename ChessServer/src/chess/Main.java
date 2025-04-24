@@ -28,9 +28,14 @@ public class Main {
                     queuePlayer = new ClientConnection(socket, games.getLast(), Color.WHITE);
                     queuePlayer.start();
                 } else {
-                    ClientConnection otherPlayer = new ClientConnection(socket, games.getLast(), Color.BLACK);
+                    ClientConnection otherPlayer = new ClientConnection(socket, games.get(games.size() - 1), Color.BLACK);
                     otherPlayer.start();
-                    games.getLast().start();
+                    games.get(games.size() - 1).start();
+
+                    // Notifica entrambi i giocatori che il gioco è pronto
+                    queuePlayer.sendReadyMessage();
+                    otherPlayer.sendReadyMessage();
+
                     queuePlayer = null;
                 }
             }
@@ -38,4 +43,5 @@ public class Main {
             System.out.println(ex.getMessage());
         }
     }
+
 }

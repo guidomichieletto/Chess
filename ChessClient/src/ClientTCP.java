@@ -1,25 +1,39 @@
 import java.io.*;
-import java.net.InetAddress;
 import java.net.Socket;
 
 public class ClientTCP {
-    private InetAddress indirizzo;
-    private final int porta = 3030;
-    public void messaggiConServer(){
+    private Socket socket;
+    private BufferedReader in;
+    private PrintWriter out;
+
+    public boolean connect(String host, int port) {
         try {
-            Socket s = new Socket(indirizzo, porta);
-            OutputStreamWriter osw = new OutputStreamWriter(s.getOutputStream());
-            BufferedWriter bw = new BufferedWriter(osw);
-            PrintWriter out = new PrintWriter(bw, true);
-
-            InputStreamReader isr = new InputStreamReader(s.getInputStream());
-            BufferedReader in = new BufferedReader(isr);
-            String str = in.readLine();
-
-            //quando devo chiudere la comunicazione
-            out.close(); in.close(); s.close();
+            socket = new Socket(host, port);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8")), true);
+            return true;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.err.println("Errore di connessione: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public void sendMessage(String message) {
+        out.println(message);
+    }
+
+    public String receiveMessage() throws IOException {
+        return in.readLine();
+    }
+
+    public void closeConnection() {
+        try {
+            in.close();
+            out.close();
+            socket.close();
+        } catch (IOException e) {
+            System.err.println("Errore durante la chiusura della connessione: " + e.getMessage());
         }
     }
 }
+
