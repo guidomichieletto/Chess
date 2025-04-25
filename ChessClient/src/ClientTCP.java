@@ -19,11 +19,14 @@ public class ClientTCP {
     }
 
     public void sendMessage(String message) {
+        System.out.println("Sending: " + message);
         out.println(message);
     }
-
+    
     public String receiveMessage() throws IOException {
-        return in.readLine();
+        String message = in.readLine();
+        System.out.println("Received: " + message);
+        return message;
     }
 
     public void closeConnection() {
