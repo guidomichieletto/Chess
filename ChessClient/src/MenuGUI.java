@@ -32,7 +32,6 @@ public class MenuGUI extends JFrame {
                 WaitingScreen waitingScreen = new WaitingScreen();
                 waitingScreen.setVisible(true);
 
-                // Thread per ascoltare il messaggio "READY" dal server
                 new Thread(() -> {
                     try {
                         String response;

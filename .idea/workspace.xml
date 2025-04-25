@@ -5,17 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f83ee9c7-faa9-43d1-8246-ec3e42b64fe3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ChessClient/src/WaitingScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ChessClient/out/production/ChessClient/ChessBoardGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/ChessClient/out/production/ChessClient/ChessBoardGUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessClient/out/production/ChessClient/ClientTCP.class" beforeDir="false" afterPath="$PROJECT_DIR$/ChessClient/out/production/ChessClient/ClientTCP.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessClient/out/production/ChessClient/MenuGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/ChessClient/out/production/ChessClient/MenuGUI.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ChessClient/src/ChessBoardGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/ChessClient/src/ChessBoardGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessClient/src/ClientTCP.java" beforeDir="false" afterPath="$PROJECT_DIR$/ChessClient/src/ClientTCP.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessClient/src/MenuGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/ChessClient/src/MenuGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessServer/src/chess/ClientConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/ChessServer/src/chess/ClientConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessServer/src/chess/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/ChessServer/src/chess/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ChessServer/src/chess/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/ChessServer/src/chess/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

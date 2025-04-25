@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 public class ChessBoardGUI extends JFrame {
     private static final int BOARD_SIZE = 8;
     private final Map<String, JLabel> pieceImages = new HashMap<>();
@@ -21,8 +22,8 @@ public class ChessBoardGUI extends JFrame {
     private ClientTCP client;
     public ChessBoardGUI(ClientTCP client) {
         this.client = client;
-        for(int i:arrayMovimento){
-            i = 0;
+        for(int i=0; i<arrayMovimento.length; i++){
+            arrayMovimento[i] = 0;
         }
 
         setTitle("Scacchiera");
@@ -45,20 +46,22 @@ public class ChessBoardGUI extends JFrame {
 
 
     private void movePiece(int startX, int startY, int endX, int endY, String namePiece) {
-        // Invia la mossa al server
-        client.sendMessage("MOVE," + startX + "," + startY + "," + endX + "," + endY);
+        new Thread(() -> {
+            client.sendMessage("MOVE," + startX + "," + startY + "," + endX + "," + endY);
 
-        try {
-            String response = client.receiveMessage();
-            if ("OK".equals(response)) {
-                // Aggiorna la GUI
-                movePiecee(startX,startY,endX,endY,namePiece);
-            }else {
-                JOptionPane.showMessageDialog(this, "Mossa non valida: " + response, "Errore", JOptionPane.ERROR_MESSAGE);
+            try {
+                String response = client.receiveMessage();
+                SwingUtilities.invokeLater(() -> {
+                    if ("OK".equals(response)) {
+                        movePiecee(startX, startY, endX, endY, namePiece);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Mossa non valida: " + response, "Errore", JOptionPane.ERROR_MESSAGE);
+                    }
+                });
+            } catch (IOException e) {
+                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(this, "Errore nella comunicazione con il server.", "Errore", JOptionPane.ERROR_MESSAGE));
             }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Errore nella comunicazione con il server.", "Errore", JOptionPane.ERROR_MESSAGE);
-        }
+        }).start();
     }
 
 
@@ -165,28 +168,23 @@ public class ChessBoardGUI extends JFrame {
         JPanel startSquare = (JPanel) boardPanel.getComponent(startY * BOARD_SIZE + startX);
         JPanel endSquare = (JPanel) boardPanel.getComponent(endY * BOARD_SIZE + endX);
 
-        // Rimuove il pezzo dalla casella di partenza
         startSquare.removeAll();
         startSquare.revalidate();
         startSquare.repaint();
 
-        // Rimuove qualsiasi pezzo nella casella di destinazione (cattura!)
         endSquare.removeAll();
         endSquare.revalidate();
         endSquare.repaint();
 
-        // Aggiunge il pezzo alla nuova posizione
         addPieceToSquare(boardPanel, endY, endX, namePiece);
     }
-
-
 
     private void addPieceToSquare(JPanel boardPanel, int row, int col, String pieceName) {
         int index = row * BOARD_SIZE + col;
         JPanel square = (JPanel) boardPanel.getComponent(index);
 
-        square.removeAll(); // <--- AGGIUNTO: rimuove eventuali pezzi già presenti
-        square.revalidate(); // <--- forza aggiornamento
+        square.removeAll();
+        square.revalidate();
 
         ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("img/" + pieceName + ".png")));
 
@@ -204,41 +202,34 @@ public class ChessBoardGUI extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 if (selectedSquare != null) {
                     if (selectedSquare == square) {
-                        // Hai cliccato lo stesso pezzo → deseleziona
                         selectedSquare.setBackground(originalColor);
                         selectedSquare = null;
                         selectedName = null;
                         arrayMovimento[0] = 0;
                         return;
                     } else {
-                        // Controlla se il pezzo cliccato è di un colore diverso
                         if ((selectedName.contains("_white") && pieceName.contains("_black")) ||
                                 (selectedName.contains("_black") && pieceName.contains("_white"))) {
 
-                            // Rimuovi il pezzo cliccato
                             square.removeAll();
                             square.revalidate();
                             square.repaint();
 
-                            // Sposta il pezzo selezionato nella nuova posizione
                             int startIndex = arrayMovimento[0];
                             int startX = startIndex % BOARD_SIZE;
                             int startY = startIndex / BOARD_SIZE;
 
                             movePiece(startX, startY, col, row, selectedName);
 
-                            // Resetta la selezione
                             selectedSquare.setBackground(originalColor);
                             selectedName = null;
                             arrayMovimento[0] = 0;
                         } else {
-                            // Stai cambiando pezzo selezionato → resetta il precedente
                             selectedSquare.setBackground(originalColor);
                         }
                     }
                 }
 
-                // Seleziona il nuovo pezzo
                 selectedSquare = square;
                 originalColor = square.getBackground();
                 selectedName = pieceName;

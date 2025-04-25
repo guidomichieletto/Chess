@@ -32,6 +32,7 @@ public class Main {
                     otherPlayer.start();
                     games.get(games.size() - 1).start();
 
+
                     // Notifica entrambi i giocatori che il gioco è pronto
                     queuePlayer.sendReadyMessage();
                     otherPlayer.sendReadyMessage();
