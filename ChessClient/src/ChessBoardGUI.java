@@ -19,10 +19,11 @@ public class ChessBoardGUI extends JFrame {
     private String selectedName = null;
 
     int[] arrayMovimento = new int[2];
+
     private ClientTCP client;
     public ChessBoardGUI(ClientTCP client) {
         this.client = client;
-        for(int i=0; i<arrayMovimento.length; i++){
+        for(int i = 0; i<arrayMovimento.length; i++){
             arrayMovimento[i] = 0;
         }
 
@@ -86,16 +87,10 @@ public class ChessBoardGUI extends JFrame {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         if (arrayMovimento[0] != 0 && arrayMovimento[1] == 0) {
-                            arrayMovimento[1] = finalRow * BOARD_SIZE + finalCol;
+                            int startX = arrayMovimento[0];
+                            int startY = arrayMovimento[1];
 
-                            int startIndex = arrayMovimento[0];
-                            int endIndex = arrayMovimento[1];
-                            int startX = startIndex % BOARD_SIZE;
-                            int startY = startIndex / BOARD_SIZE;
-                            int endX = endIndex % BOARD_SIZE;
-                            int endY = endIndex / BOARD_SIZE;
-
-                            movePiece(startX, startY, endX, endY, selectedName);
+                            movePiece(startX, startY, finalCol, finalRow, selectedName);
 
                             arrayMovimento[0] = 0;
                             arrayMovimento[1] = 0;
@@ -215,9 +210,8 @@ public class ChessBoardGUI extends JFrame {
                             square.revalidate();
                             square.repaint();
 
-                            int startIndex = arrayMovimento[0];
-                            int startX = startIndex % BOARD_SIZE;
-                            int startY = startIndex / BOARD_SIZE;
+                            int startX = arrayMovimento[0];
+                            int startY = arrayMovimento[1];
 
                             movePiece(startX, startY, col, row, selectedName);
 
@@ -233,7 +227,8 @@ public class ChessBoardGUI extends JFrame {
                 selectedSquare = square;
                 originalColor = square.getBackground();
                 selectedName = pieceName;
-                arrayMovimento[0] = row * BOARD_SIZE + col;
+                arrayMovimento[0] = col;
+                arrayMovimento[1] = row;
 
                 square.setBackground(Color.YELLOW);
             }
