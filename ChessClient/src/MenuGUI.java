@@ -36,10 +36,13 @@ public class MenuGUI extends JFrame {
                     try {
                         String response;
                         while ((response = client.receiveMessage()) != null) {
-                            if ("READY".equals(response)) {
+                            if (response.startsWith("STARTED")) {
+                                String[] parts = response.split(",");
+                                boolean areYouWhite = "W".equals(parts[1]);
+
                                 SwingUtilities.invokeLater(() -> {
                                     waitingScreen.dispose();
-                                    ChessBoardGUI chessBoardGUI = new ChessBoardGUI(client);
+                                    ChessBoardGUI chessBoardGUI = new ChessBoardGUI(client, areYouWhite);
                                     chessBoardGUI.setVisible(true);
                                 });
                                 break;

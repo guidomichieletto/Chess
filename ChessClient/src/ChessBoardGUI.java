@@ -21,14 +21,16 @@ public class ChessBoardGUI extends JFrame {
     int[] arrayMovimento = new int[2];
 
     private ClientTCP client;
-    public ChessBoardGUI(ClientTCP client) {
+    public ChessBoardGUI(ClientTCP client, boolean areYouWhite) {
         this.client = client;
-        for(int i = 0; i<arrayMovimento.length; i++){
+        this.areYouWhite = areYouWhite;
+
+        for (int i = 0; i < arrayMovimento.length; i++) {
             arrayMovimento[i] = 0;
         }
 
         setTitle("Scacchiera");
-        setSize(800, 800); //dimensione da scegliere in base al dispositivo
+        setSize(800, 800);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -46,7 +48,7 @@ public class ChessBoardGUI extends JFrame {
     }
 
 
-    private void movePiece(int startX, int startY, int endX, int endY, String namePiece) {
+    private void movePiece(int startX, int startY, int endX, int endY) {
         new Thread(() -> {
             client.sendMessage("MOVE," + startX + "," + startY + "," + endX + "," + endY);
 
@@ -63,10 +65,15 @@ public class ChessBoardGUI extends JFrame {
                                     square.removeAll();
                                 }
                             }
+                            int counter = 0;
                             for (int i = 0; i < BOARD_SIZE; i++){
                                 for (int j = 0; j < BOARD_SIZE; j++){
-                                    JPanel square = (JPanel) boardPanel.getComponent(i * BOARD_SIZE + j);
-                                    square.removeAll();
+                                    if (boardPieces[counter].isEmpty() || boardPieces[counter].equals(",")){
+                                        counter++;
+                                        continue;
+                                    }
+                                    addPieceToSquare(boardPanel, i, j, getPieceImageName(boardPieces[counter]));
+                                    counter++;
                                 }
                             }
                         } catch (IOException e) {
@@ -103,11 +110,12 @@ public class ChessBoardGUI extends JFrame {
                 square.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        if (arrayMovimento[0] != 0 && arrayMovimento[1] == 0) {
+                        if (arrayMovimento[0] != 0 && arrayMovimento[1] != 0) {
                             int startX = arrayMovimento[0];
                             int startY = arrayMovimento[1];
+                            System.out.println("Row: " + finalRow + ", Col: " + finalCol);
 
-                            movePiece(startX, startY, finalCol, finalRow, selectedName);
+                            movePiece(startX, startY, finalCol, finalRow);
 
                             arrayMovimento[0] = 0;
                             arrayMovimento[1] = 0;
@@ -127,6 +135,24 @@ public class ChessBoardGUI extends JFrame {
                 isWhite = !isWhite;
             }
             isWhite = !isWhite;
+        }
+    }
+    private String getPieceImageName(String pieceCode) {
+        switch (pieceCode) {
+            case "B,P": return "Pawn_black";
+            case "W,P": return "Pawn_white";
+            case "B,R": return "Rook_black";
+            case "W,R": return "Rook_white";
+            case "B,N": return "Knight_black";
+            case "W,N": return "Knight_white";
+            case "B,B": return "Bishop_black";
+            case "W,B": return "Bishop_white";
+            case "B,Q": return "Queen_black";
+            case "W,Q": return "Queen_white";
+            case "B,K": return "King_black";
+            case "W,K": return "King_white";
+            default:
+                throw new IllegalArgumentException("Codice pezzo non valido: " + pieceCode);
         }
     }
 
@@ -222,15 +248,10 @@ public class ChessBoardGUI extends JFrame {
                     } else {
                         if ((selectedName.contains("_white") && pieceName.contains("_black")) ||
                                 (selectedName.contains("_black") && pieceName.contains("_white"))) {
-
-                            square.removeAll();
-                            square.revalidate();
-                            square.repaint();
-
                             int startX = arrayMovimento[0];
                             int startY = arrayMovimento[1];
 
-                            movePiece(startX, startY, col, row, selectedName);
+                            movePiece(startX, startY, col, row);
 
                             selectedSquare.setBackground(originalColor);
                             selectedName = null;
