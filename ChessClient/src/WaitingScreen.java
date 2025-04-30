@@ -10,7 +10,7 @@ public class WaitingScreen extends JFrame {
         setLayout(new BorderLayout());
 
         JLabel message = new JLabel("In attesa di un avversario...", SwingConstants.CENTER);
-        message.setFont(new Font("Roboto", Font.BOLD, 20));
+        message.setFont(new Font("Times", Font.BOLD, 20));
         add(message, BorderLayout.CENTER);
     }
 }

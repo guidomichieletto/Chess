@@ -54,7 +54,24 @@ public class ChessBoardGUI extends JFrame {
                 String response = client.receiveMessage();
                 SwingUtilities.invokeLater(() -> {
                     if ("OK".equals(response)) {
-                        movePiecee(startX, startY, endX, endY, namePiece);
+                        client.sendMessage("GETBOARD");
+                        try {
+                            String[] boardPieces = client.receiveMessage().split(";");
+                            for (int i = 0; i < BOARD_SIZE; i++){
+                                for (int j = 0; j < BOARD_SIZE; j++){
+                                    JPanel square = (JPanel) boardPanel.getComponent(i * BOARD_SIZE + j);
+                                    square.removeAll();
+                                }
+                            }
+                            for (int i = 0; i < BOARD_SIZE; i++){
+                                for (int j = 0; j < BOARD_SIZE; j++){
+                                    JPanel square = (JPanel) boardPanel.getComponent(i * BOARD_SIZE + j);
+                                    square.removeAll();
+                                }
+                            }
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     } else {
                         JOptionPane.showMessageDialog(this, "Mossa non valida: " + response, "Errore", JOptionPane.ERROR_MESSAGE);
                     }
@@ -159,7 +176,7 @@ public class ChessBoardGUI extends JFrame {
         }
     }
 
-    private void movePiecee(int startX, int startY, int endX, int endY, String namePiece) {
+    /*private void movePiecee(int startX, int startY, int endX, int endY, String namePiece) {
         JPanel startSquare = (JPanel) boardPanel.getComponent(startY * BOARD_SIZE + startX);
         JPanel endSquare = (JPanel) boardPanel.getComponent(endY * BOARD_SIZE + endX);
 
@@ -172,7 +189,7 @@ public class ChessBoardGUI extends JFrame {
         endSquare.repaint();
 
         addPieceToSquare(boardPanel, endY, endX, namePiece);
-    }
+    }*/
 
     private void addPieceToSquare(JPanel boardPanel, int row, int col, String pieceName) {
         int index = row * BOARD_SIZE + col;
