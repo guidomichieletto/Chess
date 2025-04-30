@@ -33,14 +33,20 @@ public class ClientConnection extends Thread {
             return;
         }
 
-        while(!game.isStarted()) {}
+        try {
+            game.getStartSemaphore().acquire();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         out.println("STARTED," + player.symbol);
+        System.out.println("Started" + player.symbol);
 
         try {
             while(true) {
                 String line = in.readLine();
                 String[] params = line.split(",");
+                System.out.println(params[0]);
 
                 switch(params[0]) {
                     case "GETBOARD" -> getBoard();

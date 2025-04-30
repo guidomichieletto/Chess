@@ -3,6 +3,7 @@ package chess;
 import chess.pieces.*;
 
 import java.awt.Point;
+import java.util.concurrent.Semaphore;
 
 public class Game {
     public static final int COLS = 8;
@@ -10,7 +11,7 @@ public class Game {
 
     private Color currentPlayer = Color.WHITE;
     private Piece[][] board = new Piece[COLS][ROWS];
-    private boolean started = false;
+    private Semaphore started = new Semaphore(0);
 
     public Game() {
         // chess.Game init
@@ -31,16 +32,17 @@ public class Game {
         board[7][row] = new Rook(color);
     }
 
-    public boolean isStarted() {
-        return started;
-    }
-
     public Color getCurrentPlayer() {
         return currentPlayer;
     }
 
     public void start() {
-        started = true;
+        started.release();
+        started.release();
+    }
+
+    public Semaphore getStartSemaphore() {
+        return started;
     }
 
     public Piece getPiece(int x, int y) {
