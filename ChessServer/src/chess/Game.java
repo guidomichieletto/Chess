@@ -16,15 +16,12 @@ public class Game {
     private ClientConnection white;
     private ClientConnection black;
 
-    public Game(ClientConnection white, ClientConnection black) {
+    public Game() {
         // chess.Game init
         initFirstRow(0, Color.BLACK);
         for(int i = 0; i < COLS; i++) board[i][1] = new Pawn(Color.BLACK);
         initFirstRow(7, Color.WHITE);
         for(int i = 0; i < COLS; i++) board[i][6] = new Pawn(Color.WHITE);
-
-        this.white = white;
-        this.black = black;
     }
 
     private void initFirstRow(int row, Color color) {
@@ -48,6 +45,14 @@ public class Game {
 
     public ClientConnection getBlack() {
         return black;
+    }
+
+    public void setWhite(ClientConnection white) {
+        this.white = white;
+    }
+
+    public void setBlack(ClientConnection black) {
+        this.black = black;
     }
 
     public void start() {

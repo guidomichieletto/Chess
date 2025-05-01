@@ -26,11 +26,13 @@ public class Main {
                 if(queuePlayer == null) {
                     games.add(new Game());
                     queuePlayer = new ClientConnection(socket, games.getLast(), Color.WHITE);
+                    games.getLast().setWhite(queuePlayer);
                     queuePlayer.start();
                 } else {
                     ClientConnection otherPlayer = new ClientConnection(socket, games.get(games.size() - 1), Color.BLACK);
                     otherPlayer.start();
-                    games.get(games.size() - 1).start();
+                    games.getLast().setBlack(otherPlayer);
+                    games.getLast().start();
 
 
                     // Notifica entrambi i giocatori che il gioco è pronto
