@@ -70,7 +70,7 @@ public class Game {
         for(int y = 0; y < board.length; y++) {
             for(int x = 0; x < board.length; x++) {
                 if(board[x][y] != null) str += Character.toString(board[x][y].getColor().symbol) + "," + Character.toString(board[x][y].getSymbol()) + ";";
-                else str += ",";
+                else str += ";";
             }
 
             str += '\n';
