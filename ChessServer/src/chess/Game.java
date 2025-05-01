@@ -13,12 +13,18 @@ public class Game {
     private Piece[][] board = new Piece[COLS][ROWS];
     private Semaphore started = new Semaphore(0);
 
-    public Game() {
+    private ClientConnection white;
+    private ClientConnection black;
+
+    public Game(ClientConnection white, ClientConnection black) {
         // chess.Game init
         initFirstRow(0, Color.BLACK);
         for(int i = 0; i < COLS; i++) board[i][1] = new Pawn(Color.BLACK);
         initFirstRow(7, Color.WHITE);
         for(int i = 0; i < COLS; i++) board[i][6] = new Pawn(Color.WHITE);
+
+        this.white = white;
+        this.black = black;
     }
 
     private void initFirstRow(int row, Color color) {
@@ -34,6 +40,14 @@ public class Game {
 
     public Color getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    public ClientConnection getWhite() {
+        return white;
+    }
+
+    public ClientConnection getBlack() {
+        return black;
     }
 
     public void start() {
@@ -60,8 +74,14 @@ public class Game {
     }
 
     public void nextTurn() {
-        if(currentPlayer == Color.WHITE) currentPlayer = Color.BLACK;
-        else currentPlayer = Color.WHITE;
+        if(currentPlayer == Color.WHITE) {
+            currentPlayer = Color.BLACK;
+            black.sendTrigger();
+        }
+        else {
+            currentPlayer = Color.WHITE;
+            white.sendTrigger();
+        }
     }
 
     public String toCSV() {

@@ -102,4 +102,8 @@ public class ClientConnection extends Thread {
             out.println("UNALLOWEDMOVE");
         }
     }
+
+    public void sendTrigger() {
+        out.println("YOURTURN");
+    }
 }
