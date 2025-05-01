@@ -6,10 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f83ee9c7-faa9-43d1-8246-ec3e42b64fe3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessClient/out/production/ChessClient/ChessBoardGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/ChessClient/out/production/ChessClient/ChessBoardGUI.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ChessClient/src/ChessBoardGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/ChessClient/src/ChessBoardGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessClient/src/MenuGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/ChessClient/src/MenuGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessClient/src/WaitingScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/ChessClient/src/WaitingScreen.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,19 +37,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "Application.MenuGUI.executor": "Run",
-    "Application.client.executor": "Run",
-    "Application.server.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/cheni/Desktop/programmi/ChessServer"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MenuGUI.executor&quot;: &quot;Run&quot;,
+    &quot;Application.client.executor&quot;: &quot;Run&quot;,
+    &quot;Application.server.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/cheni/Desktop/programmi/ChessServer&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Application.client">
     <configuration name="client" type="Application" factoryName="Application" singleton="false">
       <option name="ALTERNATIVE_JRE_PATH" value="openjdk-24" />

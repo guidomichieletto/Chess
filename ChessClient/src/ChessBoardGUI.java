@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -45,9 +46,23 @@ public class ChessBoardGUI extends JFrame {
         mainPanel.add(boardPanel, BorderLayout.CENTER);
 
         add(mainPanel, BorderLayout.CENTER);
+        /*new Thread(() -> {
+            try {
+                while (true) {
+                    String message = client.receiveMessage();
+                    SwingUtilities.invokeLater(() -> handleServerMessage(message));
+                }
+            } catch (IOException e) {
+                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(this, "Connessione al server persa.", "Errore", JOptionPane.ERROR_MESSAGE));
+            }
+        }).start();*/
     }
 
-
+    private void handleServerMessage(String message) {
+        if ("YOURTURN".equals(message)) {
+            JOptionPane.showMessageDialog(this, "È il tuo turno!", "Informazione", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
     private void movePiece(int startX, int startY, int endX, int endY) {
         new Thread(() -> {
             client.sendMessage("MOVE," + startX + "," + startY + "," + endX + "," + endY);
@@ -58,22 +73,37 @@ public class ChessBoardGUI extends JFrame {
                     if ("OK".equals(response)) {
                         client.sendMessage("GETBOARD");
                         try {
-                            String[] boardPieces = client.receiveMessage().split(";");
+                            ArrayList<String[]> allBoardPieces = new ArrayList<>();
+                            String[] boardPieces1 = client.receiveMessage().split(";", -1);
+                            allBoardPieces.add(boardPieces1);
+                            String[] boardPieces2 = client.receiveMessage().split(";", -1);
+                            allBoardPieces.add(boardPieces2);
+                            String[] boardPieces3 = client.receiveMessage().split(";", -1);
+                            allBoardPieces.add(boardPieces3);
+                            String[] boardPieces4 = client.receiveMessage().split(";", -1);
+                            allBoardPieces.add(boardPieces4);
+                            String[] boardPieces5 = client.receiveMessage().split(";", -1);
+                            allBoardPieces.add(boardPieces5);
+                            String[] boardPieces6 = client.receiveMessage().split(";", -1);
+                            allBoardPieces.add(boardPieces6);
+                            String[] boardPieces7 = client.receiveMessage().split(";", -1);
+                            allBoardPieces.add(boardPieces7);
+                            String[] boardPieces8 = client.receiveMessage().split(";", -1);
+                            allBoardPieces.add(boardPieces8);
                             for (int i = 0; i < BOARD_SIZE; i++){
                                 for (int j = 0; j < BOARD_SIZE; j++){
                                     JPanel square = (JPanel) boardPanel.getComponent(i * BOARD_SIZE + j);
                                     square.removeAll();
+                                    square.revalidate();
+                                    square.repaint();
                                 }
                             }
-                            int counter = 0;
-                            for (int i = 0; i < BOARD_SIZE; i++){
-                                for (int j = 0; j < BOARD_SIZE; j++){
-                                    if (boardPieces[counter].isEmpty() || boardPieces[counter].equals(",")){
-                                        counter++;
-                                        continue;
+                            for (int i = 0; i < BOARD_SIZE; i++) {
+                                String[] boardPieces = allBoardPieces.get(i);
+                                for (int j = 0; j < BOARD_SIZE; j++) {
+                                    if (!boardPieces[j].isEmpty()) {
+                                        addPieceToSquare(boardPanel, i, j, getPieceImageName(boardPieces[j]));
                                     }
-                                    addPieceToSquare(boardPanel, i, j, getPieceImageName(boardPieces[counter]));
-                                    counter++;
                                 }
                             }
                         } catch (IOException e) {
@@ -269,6 +299,25 @@ public class ChessBoardGUI extends JFrame {
                 arrayMovimento[1] = row;
 
                 square.setBackground(Color.YELLOW);
+                new Thread(() -> {
+                    client.sendMessage("AVAILABLEMOVES");
+
+                    try {
+                        String response = client.receiveMessage();
+                        String[] moves = response.split(";");
+                        for (String move : moves) {
+                            String[] coordinates = move.split(",");
+                            int x = Integer.parseInt(coordinates[0]);
+                            int y = Integer.parseInt(coordinates[1]);
+                            JPanel targetSquare = (JPanel) boardPanel.getComponent(y * BOARD_SIZE + x);
+                            targetSquare.setBackground(Color.GREEN);
+                        }
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+
+                }).start();
+
             }
 
             public void mouseEntered(MouseEvent e) {
