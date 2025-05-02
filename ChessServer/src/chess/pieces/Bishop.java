@@ -7,8 +7,8 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Bishop extends Piece {
-    public Bishop(Color color) {
-        super(color, 'B');
+    public Bishop(Game game, Color color) {
+        super(game, color, 'B');
     }
 
     @Override

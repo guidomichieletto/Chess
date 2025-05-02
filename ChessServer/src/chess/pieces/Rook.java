@@ -7,8 +7,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 public class Rook extends Piece {
-    public Rook(Color color) {
-        super(color, 'R');
+    public Rook(Game game, Color color) {
+        super(game, color, 'R');
     }
 
     public ArrayList<Point> availableMoves(Point start) {

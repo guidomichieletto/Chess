@@ -19,20 +19,20 @@ public class Game {
     public Game() {
         // chess.Game init
         initFirstRow(0, Color.BLACK);
-        for(int i = 0; i < COLS; i++) board[i][1] = new Pawn(Color.BLACK);
+        for(int i = 0; i < COLS; i++) board[i][1] = new Pawn(this, Color.BLACK);
         initFirstRow(7, Color.WHITE);
-        for(int i = 0; i < COLS; i++) board[i][6] = new Pawn(Color.WHITE);
+        for(int i = 0; i < COLS; i++) board[i][6] = new Pawn(this, Color.WHITE);
     }
 
     private void initFirstRow(int row, Color color) {
-        board[0][row] = new Rook(color);
-        board[1][row] = new Knight(color);
-        board[2][row] = new Bishop(color);
-        board[3][row] = new Queen(color);
-        board[4][row] = new King(color);
-        board[5][row] = new Bishop(color);
-        board[6][row] = new Knight(color);
-        board[7][row] = new Rook(color);
+        board[0][row] = new Rook(this, color);
+        board[1][row] = new Knight(this, color);
+        board[2][row] = new Bishop(this, color);
+        board[3][row] = new Queen(this, color);
+        board[4][row] = new King(this, color);
+        board[5][row] = new Bishop(this, color);
+        board[6][row] = new Knight(this, color);
+        board[7][row] = new Rook(this, color);
     }
 
     public Color getCurrentPlayer() {
