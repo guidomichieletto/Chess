@@ -2,15 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class ChessBoardGUI extends JFrame {
     private static final int BOARD_SIZE = 8;
-    private final Map<String, JLabel> pieceImages = new HashMap<>();
     private boolean areYouWhite = true;
     JPanel boardPanel;
     JPanel mainPanel;
@@ -46,7 +43,10 @@ public class ChessBoardGUI extends JFrame {
         mainPanel.add(boardPanel, BorderLayout.CENTER);
 
         add(mainPanel, BorderLayout.CENTER);
-        /*new Thread(() -> {
+        startListeningThread();
+    }
+    private void startListeningThread() {
+        new Thread(() -> {
             try {
                 while (true) {
                     String message = client.receiveMessage();
@@ -55,68 +55,80 @@ public class ChessBoardGUI extends JFrame {
             } catch (IOException e) {
                 SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(this, "Connessione al server persa.", "Errore", JOptionPane.ERROR_MESSAGE));
             }
-        }).start();*/
+        }).start();
     }
+    private void updateBoardFromServer(String[] rows) {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                JPanel square = (JPanel) boardPanel.getComponent(i * BOARD_SIZE + j);
+                square.removeAll();
+                square.revalidate();
+                square.repaint();
+            }
+        }
 
-    private void handleServerMessage(String message) {
-        if ("YOURTURN".equals(message)) {
-            JOptionPane.showMessageDialog(this, "È il tuo turno!", "Informazione", JOptionPane.INFORMATION_MESSAGE);
+        for (int i = 0; i < BOARD_SIZE && i < rows.length; i++) {
+            String[] pieces = rows[i].split(";", -1);
+            for (int j = 0; j < BOARD_SIZE && j < pieces.length; j++) {
+                if (!pieces[j].isEmpty()) {
+                    addPieceToSquare(boardPanel, i, j, getPieceImageName(pieces[j]));
+                }
+            }
         }
     }
+
+
+    private void handleServerMessage(String message) {
+        if (message == null) return;
+
+        if (message.equals("YOURTURN")) {
+            JOptionPane.showMessageDialog(this, "È il tuo turno!", "Turno", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        if (message.equals("OK")) {
+            client.sendMessage("GETBOARD");
+            return;
+        }
+
+        if (message.equals("NOTYOURTURN")) {
+            JOptionPane.showMessageDialog(this, "Non è il tuo turno", "Errore", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (message.equals("NOTYOURPIECE")) {
+            JOptionPane.showMessageDialog(this, "Non è il tuo pezzo", "Errore", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (message.equals("UNALLOWEDMOVE")) {
+            JOptionPane.showMessageDialog(this, "Non è concesso questa mossa", "Errore", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (message.startsWith("BOARD|")) {
+            String[] rows = message.substring(6).split("\\|");
+            updateBoardFromServer(rows);
+            return;
+        }
+        if (message.startsWith("MOVES|")) {
+            String[] moves = message.substring(6).split(";");
+            for (String move : moves) {
+                if (move.isEmpty()) continue;
+                String[] coordinates = move.split(",");
+                int x = Integer.parseInt(coordinates[0]);
+                int y = Integer.parseInt(coordinates[1]);
+                int i = y * BOARD_SIZE + x;
+                JPanel targetSquare = (JPanel) boardPanel.getComponent(i);
+                targetSquare.setBackground(Color.GREEN);
+            }
+            return;
+        }
+
+        System.out.println("Messaggio sconosciuto: " + message);
+    }
+
     private void movePiece(int startX, int startY, int endX, int endY) {
-        new Thread(() -> {
             client.sendMessage("MOVE," + startX + "," + startY + "," + endX + "," + endY);
 
-            try {
-                String response = client.receiveMessage();
-                SwingUtilities.invokeLater(() -> {
-                    if ("OK".equals(response)) {
-                        client.sendMessage("GETBOARD");
-                        try {
-                            ArrayList<String[]> allBoardPieces = new ArrayList<>();
-                            String[] boardPieces1 = client.receiveMessage().split(";", -1);
-                            allBoardPieces.add(boardPieces1);
-                            String[] boardPieces2 = client.receiveMessage().split(";", -1);
-                            allBoardPieces.add(boardPieces2);
-                            String[] boardPieces3 = client.receiveMessage().split(";", -1);
-                            allBoardPieces.add(boardPieces3);
-                            String[] boardPieces4 = client.receiveMessage().split(";", -1);
-                            allBoardPieces.add(boardPieces4);
-                            String[] boardPieces5 = client.receiveMessage().split(";", -1);
-                            allBoardPieces.add(boardPieces5);
-                            String[] boardPieces6 = client.receiveMessage().split(";", -1);
-                            allBoardPieces.add(boardPieces6);
-                            String[] boardPieces7 = client.receiveMessage().split(";", -1);
-                            allBoardPieces.add(boardPieces7);
-                            String[] boardPieces8 = client.receiveMessage().split(";", -1);
-                            allBoardPieces.add(boardPieces8);
-                            for (int i = 0; i < BOARD_SIZE; i++){
-                                for (int j = 0; j < BOARD_SIZE; j++){
-                                    JPanel square = (JPanel) boardPanel.getComponent(i * BOARD_SIZE + j);
-                                    square.removeAll();
-                                    square.revalidate();
-                                    square.repaint();
-                                }
-                            }
-                            for (int i = 0; i < BOARD_SIZE; i++) {
-                                String[] boardPieces = allBoardPieces.get(i);
-                                for (int j = 0; j < BOARD_SIZE; j++) {
-                                    if (!boardPieces[j].isEmpty()) {
-                                        addPieceToSquare(boardPanel, i, j, getPieceImageName(boardPieces[j]));
-                                    }
-                                }
-                            }
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Mossa non valida: " + response, "Errore", JOptionPane.ERROR_MESSAGE);
-                    }
-                });
-            } catch (IOException e) {
-                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(this, "Errore nella comunicazione con il server.", "Errore", JOptionPane.ERROR_MESSAGE));
-            }
-        }).start();
     }
 
 
@@ -268,6 +280,8 @@ public class ChessBoardGUI extends JFrame {
         piece.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                resetBoardColors();
+
                 if (selectedSquare != null) {
                     if (selectedSquare == square) {
                         selectedSquare.setBackground(originalColor);
@@ -299,25 +313,7 @@ public class ChessBoardGUI extends JFrame {
                 arrayMovimento[1] = row;
 
                 square.setBackground(Color.YELLOW);
-                new Thread(() -> {
-                    client.sendMessage("AVAILABLEMOVES");
-
-                    try {
-                        String response = client.receiveMessage();
-                        String[] moves = response.split(";");
-                        for (String move : moves) {
-                            String[] coordinates = move.split(",");
-                            int x = Integer.parseInt(coordinates[0]);
-                            int y = Integer.parseInt(coordinates[1]);
-                            JPanel targetSquare = (JPanel) boardPanel.getComponent(y * BOARD_SIZE + x);
-                            targetSquare.setBackground(Color.GREEN);
-                        }
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-
-                }).start();
-
+                client.sendMessage("AVAILABLEMOVES," + col + "," + row);
             }
 
             public void mouseEntered(MouseEvent e) {
@@ -326,8 +322,6 @@ public class ChessBoardGUI extends JFrame {
         });
 
         square.add(piece, BorderLayout.CENTER);
-
-        pieceImages.put(row + "," + col, piece);
     }
 
     private JPanel createRowNumbers() {
@@ -351,4 +345,16 @@ public class ChessBoardGUI extends JFrame {
         }
         return columnLabels;
     }
+    private void resetBoardColors() {
+        boolean isWhite = true;
+        for (int row = 0; row < BOARD_SIZE; row++) {
+            for (int col = 0; col < BOARD_SIZE; col++) {
+                JPanel square = (JPanel) boardPanel.getComponent(row * BOARD_SIZE + col);
+                square.setBackground(isWhite ? Color.WHITE : Color.LIGHT_GRAY);
+                isWhite = !isWhite;
+            }
+            isWhite = !isWhite;
+        }
+    }
+
 }

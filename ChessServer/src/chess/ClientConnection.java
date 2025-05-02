@@ -73,14 +73,16 @@ public class ClientConnection extends Thread {
     }
 
     private void getBoard() {
-        out.println(game.toCSV());
+        String board = game.toCSV().replace("\n", "|");
+        out.println("BOARD|" + board);
     }
 
     private void availableMoves(Point start) {
+        StringBuilder sb = new StringBuilder("MOVES|");
         for(Point p : game.getPiece(start.x, start.y).availableMoves(start)) {
-            out.print(p.x + "," + p.y + ";");
+            sb.append(p.x).append(",").append(p.y).append(";");
         }
-        out.println();
+        out.println(sb.toString());
     }
 
     private void move(Point start, Point end) {
