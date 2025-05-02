@@ -7,8 +7,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 public class Knight extends Piece {
-    public Knight(Color color) {
-        super(color, 'N');
+    public Knight(Game game, Color color) {
+        super(game, color, 'N');
     }
 
     public ArrayList<Point> availableMoves(Point start) {

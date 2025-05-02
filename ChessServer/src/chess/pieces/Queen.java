@@ -7,8 +7,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 public class Queen extends Piece {
-    public Queen(Color color) {
-        super(color, 'Q');
+    public Queen(Game game, Color color) {
+        super(game, color, 'Q');
     }
 
     public ArrayList<Point> availableMoves(Point start) {

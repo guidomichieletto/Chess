@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class King extends Piece {
 
-    public King(Color color) {
-        super(color, 'K');
+    public King(Game game, Color color) {
+        super(game, color, 'K');
     }
 
     public ArrayList<Point> availableMoves(Point start) {
