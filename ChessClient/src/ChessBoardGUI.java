@@ -18,6 +18,7 @@ public class ChessBoardGUI extends JFrame {
     int[] arrayMovimento = new int[2];
 
     private ClientTCP client;
+
     public ChessBoardGUI(ClientTCP client, boolean areYouWhite) {
         this.client = client;
         this.areYouWhite = areYouWhite;
@@ -122,19 +123,25 @@ public class ChessBoardGUI extends JFrame {
             }
             return;
         }
-
+        if (message.equals("PROMOTION")){
+            PromotionScreen promotionScreen = new PromotionScreen(areYouWhite);
+            promotionScreen.setVisible(true);
+            while (promotionScreen.isVisible()) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            client.sendMessage("PROM" + getPieceCodeFromImageName(promotionScreen.getPieceToPromotion()));
+            return;
+        }
         System.out.println("Messaggio sconosciuto: " + message);
     }
 
     private void movePiece(int startX, int startY, int endX, int endY) {
         client.sendMessage("MOVE," + convertCoordinate(startX) + "," + convertCoordinate(startY) + "," + convertCoordinate(endX) + "," + convertCoordinate(endY));
     }
-
-
-    public void setAreYouWhite(boolean areYouWhite) {
-        this.areYouWhite = areYouWhite;
-    }
-
 
     private void initializeBoard(JPanel boardPanel) {
         boolean isWhite = true;
@@ -195,6 +202,24 @@ public class ChessBoardGUI extends JFrame {
             default -> throw new IllegalArgumentException("Codice pezzo non valido: " + pieceCode);
         };
     }
+    private String getPieceCodeFromImageName(String imageName) {
+        return switch (imageName) {
+            case "Pawn_black" -> "B,P";
+            case "Pawn_white" -> "W,P";
+            case "Rook_black" -> "B,R";
+            case "Rook_white" -> "W,R";
+            case "Knight_black" -> "B,N";
+            case "Knight_white" -> "W,N";
+            case "Bishop_black" -> "B,B";
+            case "Bishop_white" -> "W,B";
+            case "Queen_black" -> "B,Q";
+            case "Queen_white" -> "W,Q";
+            case "King_black" -> "B,K";
+            case "King_white" -> "W,K";
+            default -> throw new IllegalArgumentException("Nome immagine non valido: " + imageName);
+        };
+    }
+
 
     private void placePieces(JPanel boardPanel) {
         if (areYouWhite) {
