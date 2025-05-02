@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -60,7 +59,7 @@ public class ChessBoardGUI extends JFrame {
     private void updateBoardFromServer(String[] rows) {
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
-                JPanel square = (JPanel) boardPanel.getComponent(i * BOARD_SIZE + j);
+                JPanel square = (JPanel) boardPanel.getComponent(convertCoordinate(i) * BOARD_SIZE + convertCoordinate(j));
                 square.removeAll();
                 square.revalidate();
                 square.repaint();
@@ -71,7 +70,7 @@ public class ChessBoardGUI extends JFrame {
             String[] pieces = rows[i].split(";", -1);
             for (int j = 0; j < BOARD_SIZE && j < pieces.length; j++) {
                 if (!pieces[j].isEmpty()) {
-                    addPieceToSquare(boardPanel, i, j, getPieceImageName(pieces[j]));
+                    addPieceToSquare(boardPanel, convertCoordinate(i), convertCoordinate(j), getPieceImageName(pieces[j]));
                 }
             }
         }
@@ -111,14 +110,15 @@ public class ChessBoardGUI extends JFrame {
         }
         if (message.startsWith("MOVES|")) {
             String[] moves = message.substring(6).split(";");
+            Color highlightColor = (selectedSquare == null) ? Color.ORANGE : Color.GREEN;
             for (String move : moves) {
                 if (move.isEmpty()) continue;
                 String[] coordinates = move.split(",");
-                int x = Integer.parseInt(coordinates[0]);
-                int y = Integer.parseInt(coordinates[1]);
+                int x = convertCoordinate(Integer.parseInt(coordinates[0]));
+                int y = convertCoordinate(Integer.parseInt(coordinates[1]));
                 int i = y * BOARD_SIZE + x;
                 JPanel targetSquare = (JPanel) boardPanel.getComponent(i);
-                targetSquare.setBackground(Color.GREEN);
+                targetSquare.setBackground(highlightColor);
             }
             return;
         }
@@ -127,8 +127,7 @@ public class ChessBoardGUI extends JFrame {
     }
 
     private void movePiece(int startX, int startY, int endX, int endY) {
-            client.sendMessage("MOVE," + startX + "," + startY + "," + endX + "," + endY);
-
+        client.sendMessage("MOVE," + convertCoordinate(startX) + "," + convertCoordinate(startY) + "," + convertCoordinate(endX) + "," + convertCoordinate(endY));
     }
 
 
@@ -165,6 +164,7 @@ public class ChessBoardGUI extends JFrame {
                             selectedSquare.setBackground(originalColor);
                             selectedSquare = null;
                             selectedName = null;
+                            resetBoardColors();
                         }
                     }
 
@@ -180,22 +180,21 @@ public class ChessBoardGUI extends JFrame {
         }
     }
     private String getPieceImageName(String pieceCode) {
-        switch (pieceCode) {
-            case "B,P": return "Pawn_black";
-            case "W,P": return "Pawn_white";
-            case "B,R": return "Rook_black";
-            case "W,R": return "Rook_white";
-            case "B,N": return "Knight_black";
-            case "W,N": return "Knight_white";
-            case "B,B": return "Bishop_black";
-            case "W,B": return "Bishop_white";
-            case "B,Q": return "Queen_black";
-            case "W,Q": return "Queen_white";
-            case "B,K": return "King_black";
-            case "W,K": return "King_white";
-            default:
-                throw new IllegalArgumentException("Codice pezzo non valido: " + pieceCode);
-        }
+        return switch (pieceCode) {
+            case "B,P" -> "Pawn_black";
+            case "W,P" -> "Pawn_white";
+            case "B,R" -> "Rook_black";
+            case "W,R" -> "Rook_white";
+            case "B,N" -> "Knight_black";
+            case "W,N" -> "Knight_white";
+            case "B,B" -> "Bishop_black";
+            case "W,B" -> "Bishop_white";
+            case "B,Q" -> "Queen_black";
+            case "W,Q" -> "Queen_white";
+            case "B,K" -> "King_black";
+            case "W,K" -> "King_white";
+            default -> throw new IllegalArgumentException("Codice pezzo non valido: " + pieceCode);
+        };
     }
 
     private void placePieces(JPanel boardPanel) {
@@ -243,6 +242,9 @@ public class ChessBoardGUI extends JFrame {
             addPieceToSquare(boardPanel, 7, 3, "King_black");
         }
     }
+    private int convertCoordinate(int coord) {
+        return areYouWhite ? coord : BOARD_SIZE - 1 - coord;
+    }
 
     /*private void movePiecee(int startX, int startY, int endX, int endY, String namePiece) {
         JPanel startSquare = (JPanel) boardPanel.getComponent(startY * BOARD_SIZE + startX);
@@ -281,6 +283,27 @@ public class ChessBoardGUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 resetBoardColors();
+                boolean isMyPiece = (areYouWhite && pieceName.contains("_white")) ||
+                        (!areYouWhite && pieceName.contains("_black"));
+
+                if (selectedSquare == null) {
+                    if (!isMyPiece) {
+                        client.sendMessage("AVAILABLEMOVES," + convertCoordinate(col) + "," + convertCoordinate(row));
+                        selectedSquare = null;
+                        selectedName = null;
+                        arrayMovimento[0] = 0;
+                        arrayMovimento[1] = 0;
+                        return;
+                    }
+                    selectedSquare = square;
+                    originalColor = square.getBackground();
+                    selectedName = pieceName;
+                    arrayMovimento[0] = col;
+                    arrayMovimento[1] = row;
+                    square.setBackground(Color.YELLOW);
+                    client.sendMessage("AVAILABLEMOVES," + convertCoordinate(col) + "," + convertCoordinate(row));
+                    return;
+                }
 
                 if (selectedSquare != null) {
                     if (selectedSquare == square) {
@@ -289,31 +312,29 @@ public class ChessBoardGUI extends JFrame {
                         selectedName = null;
                         arrayMovimento[0] = 0;
                         return;
+                    }
+                    if ((selectedName.contains("_white") && pieceName.contains("_black")) ||
+                            (selectedName.contains("_black") && pieceName.contains("_white"))) {
+                        int startX = convertCoordinate(arrayMovimento[0]);
+                        int startY = convertCoordinate(arrayMovimento[1]);
+                        movePiece(startX, startY, convertCoordinate(col), convertCoordinate(row));
+                        selectedSquare.setBackground(originalColor);
+                        selectedSquare = null;
+                        selectedName = null;
+                        arrayMovimento[0] = 0;
+                        arrayMovimento[1] = 0;
+                        resetBoardColors();
                     } else {
-                        if ((selectedName.contains("_white") && pieceName.contains("_black")) ||
-                                (selectedName.contains("_black") && pieceName.contains("_white"))) {
-                            int startX = arrayMovimento[0];
-                            int startY = arrayMovimento[1];
-
-                            movePiece(startX, startY, col, row);
-
-                            selectedSquare.setBackground(originalColor);
-                            selectedName = null;
-                            arrayMovimento[0] = 0;
-                        } else {
-                            selectedSquare.setBackground(originalColor);
-                        }
+                        selectedSquare.setBackground(originalColor);
+                        selectedSquare = square;
+                        originalColor = square.getBackground();
+                        selectedName = pieceName;
+                        arrayMovimento[0] = col;
+                        arrayMovimento[1] = row;
+                        square.setBackground(Color.YELLOW);
+                        client.sendMessage("AVAILABLEMOVES," + convertCoordinate(col) + "," + convertCoordinate(row));
                     }
                 }
-
-                selectedSquare = square;
-                originalColor = square.getBackground();
-                selectedName = pieceName;
-                arrayMovimento[0] = col;
-                arrayMovimento[1] = row;
-
-                square.setBackground(Color.YELLOW);
-                client.sendMessage("AVAILABLEMOVES," + col + "," + row);
             }
 
             public void mouseEntered(MouseEvent e) {
