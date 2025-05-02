@@ -41,6 +41,9 @@ public class ClientConnection extends Thread {
 
         out.println("STARTED," + player.symbol);
         System.out.println("Started" + player.symbol);
+        if (player == Color.WHITE) {
+            sendTrigger();
+        }
 
         try {
             while(true) {
@@ -75,6 +78,11 @@ public class ClientConnection extends Thread {
     private void getBoard() {
         String board = game.toCSV().replace("\n", "|");
         out.println("BOARD|" + board);
+
+        ClientConnection other = (player == Color.WHITE) ? game.getBlack() : game.getWhite();
+        if (other != null) {
+            other.out.println("BOARD|" + board);
+        }
     }
 
     private void availableMoves(Point start) {

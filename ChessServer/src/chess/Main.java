@@ -39,6 +39,7 @@ public class Main {
                     queuePlayer.sendReadyMessage();
                     otherPlayer.sendReadyMessage();
 
+
                     queuePlayer = null;
                 }
             }

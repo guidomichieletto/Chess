@@ -154,7 +154,6 @@ public class ChessBoardGUI extends JFrame {
                         if (arrayMovimento[0] != 0 && arrayMovimento[1] != 0) {
                             int startX = arrayMovimento[0];
                             int startY = arrayMovimento[1];
-                            System.out.println("Row: " + finalRow + ", Col: " + finalCol);
 
                             movePiece(startX, startY, finalCol, finalRow);
 
@@ -288,6 +287,7 @@ public class ChessBoardGUI extends JFrame {
 
                 if (selectedSquare == null) {
                     if (!isMyPiece) {
+                        square.setBackground(Color.YELLOW);
                         client.sendMessage("AVAILABLEMOVES," + convertCoordinate(col) + "," + convertCoordinate(row));
                         selectedSquare = null;
                         selectedName = null;
@@ -305,35 +305,33 @@ public class ChessBoardGUI extends JFrame {
                     return;
                 }
 
-                if (selectedSquare != null) {
-                    if (selectedSquare == square) {
-                        selectedSquare.setBackground(originalColor);
-                        selectedSquare = null;
-                        selectedName = null;
-                        arrayMovimento[0] = 0;
-                        return;
-                    }
-                    if ((selectedName.contains("_white") && pieceName.contains("_black")) ||
-                            (selectedName.contains("_black") && pieceName.contains("_white"))) {
-                        int startX = convertCoordinate(arrayMovimento[0]);
-                        int startY = convertCoordinate(arrayMovimento[1]);
-                        movePiece(startX, startY, convertCoordinate(col), convertCoordinate(row));
-                        selectedSquare.setBackground(originalColor);
-                        selectedSquare = null;
-                        selectedName = null;
-                        arrayMovimento[0] = 0;
-                        arrayMovimento[1] = 0;
-                        resetBoardColors();
-                    } else {
-                        selectedSquare.setBackground(originalColor);
-                        selectedSquare = square;
-                        originalColor = square.getBackground();
-                        selectedName = pieceName;
-                        arrayMovimento[0] = col;
-                        arrayMovimento[1] = row;
-                        square.setBackground(Color.YELLOW);
-                        client.sendMessage("AVAILABLEMOVES," + convertCoordinate(col) + "," + convertCoordinate(row));
-                    }
+                if (selectedSquare == square) {
+                    selectedSquare.setBackground(originalColor);
+                    selectedSquare = null;
+                    selectedName = null;
+                    arrayMovimento[0] = 0;
+                    return;
+                }
+                if ((selectedName.contains("_white") && pieceName.contains("_black")) ||
+                        (selectedName.contains("_black") && pieceName.contains("_white"))) {
+                    int startX = convertCoordinate(arrayMovimento[0]);
+                    int startY = convertCoordinate(arrayMovimento[1]);
+                    movePiece(startX, startY, convertCoordinate(col), convertCoordinate(row));
+                    selectedSquare.setBackground(originalColor);
+                    selectedSquare = null;
+                    selectedName = null;
+                    arrayMovimento[0] = 0;
+                    arrayMovimento[1] = 0;
+                    resetBoardColors();
+                } else {
+                    selectedSquare.setBackground(originalColor);
+                    selectedSquare = square;
+                    originalColor = square.getBackground();
+                    selectedName = pieceName;
+                    arrayMovimento[0] = col;
+                    arrayMovimento[1] = row;
+                    square.setBackground(Color.YELLOW);
+                    client.sendMessage("AVAILABLEMOVES," + convertCoordinate(col) + "," + convertCoordinate(row));
                 }
             }
 

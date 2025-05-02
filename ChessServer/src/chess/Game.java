@@ -79,6 +79,7 @@ public class Game {
     }
 
     public void nextTurn() {
+
         if(currentPlayer == Color.WHITE) {
             currentPlayer = Color.BLACK;
             black.sendTrigger();
