@@ -29,7 +29,28 @@ public class ChessBoardGUI extends JFrame {
         setTitle("Scacchiera");
         setSize(800, 800);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                int result = JOptionPane.showConfirmDialog(
+                        ChessBoardGUI.this,
+                        "Sei sicuro di voler uscire?",
+                        "Conferma uscita",
+                        JOptionPane.YES_NO_OPTION
+                );
+                if (result == JOptionPane.YES_OPTION) {
+                    try {
+                        client.sendMessage("RESIGN");
+                        System.exit(0);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    } finally {
+                        dispose();
+                    }
+                }
+            }
+        });
         setLayout(new BorderLayout());
 
         boardPanel = new JPanel(new GridLayout(BOARD_SIZE, BOARD_SIZE));
@@ -79,6 +100,15 @@ public class ChessBoardGUI extends JFrame {
 
     private void handleServerMessage(String message) {
         if (message == null) return;
+        if (message.equals("WIN")) {
+            JOptionPane.showMessageDialog(this, "HAI VINTO!", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        if (message.equals("LOSE")) {
+            JOptionPane.showMessageDialog(this, "HAI PERSO!", "Sconfitta", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
 
         if (message.equals("YOURTURN")) {
             JOptionPane.showMessageDialog(this, "È il tuo turno!", "Turno", JOptionPane.INFORMATION_MESSAGE);
@@ -221,68 +251,31 @@ public class ChessBoardGUI extends JFrame {
 
 
     private void placePieces(JPanel boardPanel) {
-        if (areYouWhite) {
-            for (int col = 0; col < BOARD_SIZE; col++) {
-                addPieceToSquare(boardPanel, 1, col, "Pawn_black");
-                addPieceToSquare(boardPanel, 6, col, "Pawn_white");
-            }
-            addPieceToSquare(boardPanel, 0, 0, "Rook_black");
-            addPieceToSquare(boardPanel, 0, 7, "Rook_black");
-            addPieceToSquare(boardPanel, 7, 0, "Rook_white");
-            addPieceToSquare(boardPanel, 7, 7, "Rook_white");
-            addPieceToSquare(boardPanel, 0, 1, "Knight_black");
-            addPieceToSquare(boardPanel, 0, 6, "Knight_black");
-            addPieceToSquare(boardPanel, 7, 1, "Knight_white");
-            addPieceToSquare(boardPanel, 7, 6, "Knight_white");
-            addPieceToSquare(boardPanel, 0, 2, "Bishop_black");
-            addPieceToSquare(boardPanel, 0, 5, "Bishop_black");
-            addPieceToSquare(boardPanel, 7, 2, "Bishop_white");
-            addPieceToSquare(boardPanel, 7, 5, "Bishop_white");
-            addPieceToSquare(boardPanel, 0, 3, "Queen_black");
-            addPieceToSquare(boardPanel, 7, 3, "Queen_white");
-            addPieceToSquare(boardPanel, 0, 4, "King_black");
-            addPieceToSquare(boardPanel, 7, 4, "King_white");
-        } else {
-            for (int col = 0; col < BOARD_SIZE; col++) {
-                addPieceToSquare(boardPanel, 1, col, "Pawn_white");
-                addPieceToSquare(boardPanel, 6, col, "Pawn_black");
-            }
-            addPieceToSquare(boardPanel, 0, 0, "Rook_white");
-            addPieceToSquare(boardPanel, 0, 7, "Rook_white");
-            addPieceToSquare(boardPanel, 7, 0, "Rook_black");
-            addPieceToSquare(boardPanel, 7, 7, "Rook_black");
-            addPieceToSquare(boardPanel, 0, 1, "Knight_white");
-            addPieceToSquare(boardPanel, 0, 6, "Knight_white");
-            addPieceToSquare(boardPanel, 7, 1, "Knight_black");
-            addPieceToSquare(boardPanel, 7, 6, "Knight_black");
-            addPieceToSquare(boardPanel, 0, 2, "Bishop_white");
-            addPieceToSquare(boardPanel, 0, 5, "Bishop_white");
-            addPieceToSquare(boardPanel, 7, 2, "Bishop_black");
-            addPieceToSquare(boardPanel, 7, 5, "Bishop_black");
-            addPieceToSquare(boardPanel, 0, 4, "Queen_white");
-            addPieceToSquare(boardPanel, 7, 4, "Queen_black");
-            addPieceToSquare(boardPanel, 0, 3, "King_white");
-            addPieceToSquare(boardPanel, 7, 3, "King_black");
+        for (int col = 0; col < BOARD_SIZE; col++) {
+            addPieceToSquare(boardPanel, convertCoordinate(1), convertCoordinate(col), "Pawn_black");
+            addPieceToSquare(boardPanel, convertCoordinate(6), convertCoordinate(col), "Pawn_white");
         }
+        addPieceToSquare(boardPanel, convertCoordinate(0), convertCoordinate(0), "Rook_black");
+        addPieceToSquare(boardPanel, convertCoordinate(0), convertCoordinate(7), "Rook_black");
+        addPieceToSquare(boardPanel, convertCoordinate(7), convertCoordinate(0), "Rook_white");
+        addPieceToSquare(boardPanel, convertCoordinate(7), convertCoordinate(7), "Rook_white");
+        addPieceToSquare(boardPanel, convertCoordinate(0), convertCoordinate(1), "Knight_black");
+        addPieceToSquare(boardPanel, convertCoordinate(0), convertCoordinate(6), "Knight_black");
+        addPieceToSquare(boardPanel, convertCoordinate(7), convertCoordinate(1), "Knight_white");
+        addPieceToSquare(boardPanel, convertCoordinate(7), convertCoordinate(6), "Knight_white");
+        addPieceToSquare(boardPanel, convertCoordinate(0), convertCoordinate(2), "Bishop_black");
+        addPieceToSquare(boardPanel, convertCoordinate(0), convertCoordinate(5), "Bishop_black");
+        addPieceToSquare(boardPanel, convertCoordinate(7), convertCoordinate(2), "Bishop_white");
+        addPieceToSquare(boardPanel, convertCoordinate(7), convertCoordinate(5), "Bishop_white");
+        addPieceToSquare(boardPanel, convertCoordinate(0), convertCoordinate(3), "Queen_black");
+        addPieceToSquare(boardPanel, convertCoordinate(7), convertCoordinate(3), "Queen_white");
+        addPieceToSquare(boardPanel, convertCoordinate(0), convertCoordinate(4), "King_black");
+        addPieceToSquare(boardPanel, convertCoordinate(7), convertCoordinate(4), "King_white");
+
     }
     private int convertCoordinate(int coord) {
         return areYouWhite ? coord : BOARD_SIZE - 1 - coord;
     }
-
-    /*private void movePiecee(int startX, int startY, int endX, int endY, String namePiece) {
-        JPanel startSquare = (JPanel) boardPanel.getComponent(startY * BOARD_SIZE + startX);
-        JPanel endSquare = (JPanel) boardPanel.getComponent(endY * BOARD_SIZE + endX);
-
-        startSquare.removeAll();
-        startSquare.revalidate();
-        startSquare.repaint();
-
-        endSquare.removeAll();
-        endSquare.revalidate();
-        endSquare.repaint();
-
-        addPieceToSquare(boardPanel, endY, endX, namePiece);
-    }*/
 
     private void addPieceToSquare(JPanel boardPanel, int row, int col, String pieceName) {
         int index = row * BOARD_SIZE + col;
