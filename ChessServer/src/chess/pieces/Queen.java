@@ -14,14 +14,32 @@ public class Queen extends Piece {
     public ArrayList<Point> availableMoves(Point start) {
         ArrayList<Point> availableMoves = new ArrayList<>();
 
-        // Horizontal
-        for(int x = 0; x < Game.COLS; x++) {
-            if(x != start.x) availableMoves.add(new Point(x, start.y));
+        // Horizontal right
+        for(int x = start.x + 1; x < Game.COLS; x++) {
+            if(!checkCellColor(x, start.y)) break;
+            availableMoves.add(new Point(x, start.y));
+            if(!checkCell(x, start.y)) break;
         }
 
-        // Vertical
-        for(int y = 0; y < Game.ROWS; y++) {
-            if(y != start.y) availableMoves.add(new Point(start.x, y));
+        // Horizontal left
+        for(int x = start.x - 1; x >= 0; x--) {
+            if(!checkCellColor(x, start.y)) break;
+            availableMoves.add(new Point(x, start.y));
+            if(!checkCell(x, start.y)) break;
+        }
+
+        // Vertical down
+        for(int y = start.y + 1; y < Game.ROWS; y++) {
+            if(!checkCellColor(start.x, y)) break;
+            availableMoves.add(new Point(start.x, y));
+            if(!checkCell(start.x, y)) break;
+        }
+
+        // Vertical up
+        for(int y = start.y - 1; y >= 0; y--) {
+            if(!checkCellColor(start.x, y)) break;
+            availableMoves.add(new Point(start.x, y));
+            if(!checkCell(start.x, y)) break;
         }
 
         // Diagonal

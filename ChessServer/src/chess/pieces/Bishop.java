@@ -16,16 +16,24 @@ public class Bishop extends Piece {
         ArrayList<Point> availableMoves = new ArrayList<>();
 
         for (int i = 1; start.x + i < Game.COLS && start.y + i < Game.ROWS; i++) {
+            if(!checkCellColor(start.x + i, start.y + i)) break;
             availableMoves.add(new Point(start.x + i, start.y + i));
+            if(!checkCell(start.x + i, start.y + i)) break;
         }
         for (int i = 1; start.x - i >= 0 && start.y + i < Game.ROWS; i++) {
+            if(!checkCellColor(start.x - i, start.y + i)) break;
             availableMoves.add(new Point(start.x - i, start.y + i));
+            if(!checkCell(start.x - i, start.y + i)) break;
         }
         for (int i = 1; start.x + i < Game.COLS && start.y - i >= 0; i++) {
+            if(!checkCellColor(start.x + i, start.y - i)) break;
             availableMoves.add(new Point(start.x + i, start.y - i));
+            if(!checkCell(start.x + i, start.y - i)) break;
         }
         for (int i = 1; start.x - i >= 0 && start.y - i >= 0; i++) {
+            if(!checkCellColor(start.x - i, start.y - i)) break;
             availableMoves.add(new Point(start.x - i, start.y - i));
+            if(!checkCell(start.x - i, start.y - i)) break;
         }
 
         return availableMoves;

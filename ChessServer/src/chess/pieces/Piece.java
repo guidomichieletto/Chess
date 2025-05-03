@@ -34,4 +34,12 @@ public abstract class Piece {
     public boolean legalMove(Point start, Point end) {
         return availableMoves(start).contains(end);
     }
+
+    protected boolean checkCell(int x, int y) {
+        return this.getGame().getPiece(x, y) == null;
+    }
+
+    protected boolean checkCellColor(int x, int y) {
+        return checkCell(x, y) || this.getGame().getPiece(x, y).getColor() != this.getColor();
+    }
 }
