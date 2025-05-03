@@ -55,6 +55,37 @@ public class ClientConnection extends Thread {
                     case "GETBOARD" -> getBoard();
                     case "AVAILABLEMOVES" -> availableMoves(new Point(Integer.parseInt(params[1]), Integer.parseInt(params[2])));
                     case "MOVE" -> move(new Point(Integer.parseInt(params[1]), Integer.parseInt(params[2])), new Point(Integer.parseInt(params[3]), Integer.parseInt(params[4])));
+                    case "RESIGN" -> {
+                        out.println("RESIGN");
+                        ClientConnection other = (player == Color.WHITE) ? game.getBlack() : game.getWhite();
+                        if (other != null) {
+                            other.out.println("WIN");
+                        }
+                        socket.close();
+                        return;
+                    }
+                    case "DRAW_OFFER" -> {
+                        ClientConnection other = (player == Color.WHITE) ? game.getBlack() : game.getWhite();
+                        if (other != null) {
+                            other.out.println("DRAW_OFFER");
+                        }
+                    }
+                    case "DRAW_ACCEPT" -> {
+                        out.println("DRAW_ACCEPT");
+                        ClientConnection other = (player == Color.WHITE) ? game.getBlack() : game.getWhite();
+                        if (other != null) {
+                            other.out.println("DRAW_ACCEPT");
+                        }
+                        socket.close();
+                        return;
+                    }
+                    case "DRAW_REJECT" -> {
+                        out.println("DRAW_REJECT");
+                        ClientConnection other = (player == Color.WHITE) ? game.getBlack() : game.getWhite();
+                        if (other != null) {
+                            other.out.println("DRAW_REJECT");
+                        }
+                    }
                 }
             }
 

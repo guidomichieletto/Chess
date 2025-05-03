@@ -33,13 +33,19 @@ public class ChessBoardGUI extends JFrame {
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent e) {
-                int result = JOptionPane.showConfirmDialog(
+                String[] options = {"Sì", "No", "Pareggio"};
+                int result = JOptionPane.showOptionDialog(
                         ChessBoardGUI.this,
                         "Sei sicuro di voler uscire?",
                         "Conferma uscita",
-                        JOptionPane.YES_NO_OPTION
+                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        options,
+                        options[2]
                 );
-                if (result == JOptionPane.YES_OPTION) {
+
+                if (result == 0) { // Sì
                     try {
                         client.sendMessage("RESIGN");
                         System.exit(0);
@@ -48,6 +54,10 @@ public class ChessBoardGUI extends JFrame {
                     } finally {
                         dispose();
                     }
+                } else if (result == 1) {
+                    // No: non fare nulla
+                } else if (result == 2) {
+                    client.sendMessage("DRAW_OFFER");
                 }
             }
         });
@@ -100,13 +110,35 @@ public class ChessBoardGUI extends JFrame {
 
     private void handleServerMessage(String message) {
         if (message == null) return;
+        if(message.equals("DRAW_OFFER")) {
+            int response = JOptionPane.showConfirmDialog(this, "Il tuo avversario ha proposto un pareggio. Vuoi accettare?", "Proposta di pareggio", JOptionPane.YES_NO_OPTION);
+            if (response == JOptionPane.YES_OPTION) {
+                client.sendMessage("DRAW_ACCEPT");
+                JOptionPane.showMessageDialog(this, "Hai accettato il pareggio!", "Pareggio accettato", JOptionPane.INFORMATION_MESSAGE);
+                System.exit(0);
+            } else {
+                client.sendMessage("DRAW_REJECT");
+            }
+            return;
+        }
+        if (message.equals("DRAW_ACCEPT")) {
+            JOptionPane.showMessageDialog(this, "Il tuo avversario ha accettato il pareggio!", "Pareggio accettato", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+            return;
+        }
+        if (message.equals("DRAW_REJECT")) {
+            JOptionPane.showMessageDialog(this, "Il tuo avversario ha rifiutato il pareggio!", "Pareggio rifiutato", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
         if (message.equals("WIN")) {
             JOptionPane.showMessageDialog(this, "HAI VINTO!", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
             return;
         }
 
         if (message.equals("LOSE")) {
             JOptionPane.showMessageDialog(this, "HAI PERSO!", "Sconfitta", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
             return;
         }
 

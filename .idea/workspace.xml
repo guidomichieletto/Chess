@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f83ee9c7-faa9-43d1-8246-ec3e42b64fe3" name="Changes" comment="fixato conversione delle coordinate da parte del nero">
+    <list default="true" id="f83ee9c7-faa9-43d1-8246-ec3e42b64fe3" name="Changes" comment="aggiunta la finestra di arresa">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ChessClient/src/ChessBoardGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/ChessClient/src/ChessBoardGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChessClient/src/ClientTCP.java" beforeDir="false" afterPath="$PROJECT_DIR$/ChessClient/src/ClientTCP.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChessServer/src/chess/ClientConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/ChessServer/src/chess/ClientConnection.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,7 +134,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746267809183</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="aggiunta la finestra di arresa">
+      <option name="closed" value="true" />
+      <created>1746270056876</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1746270056876</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -141,6 +151,7 @@
     <MESSAGE value="è quasi giocabile" />
     <MESSAGE value="modifiche per la promozione" />
     <MESSAGE value="fixato conversione delle coordinate da parte del nero" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixato conversione delle coordinate da parte del nero" />
+    <MESSAGE value="aggiunta la finestra di arresa" />
+    <option name="LAST_COMMIT_MESSAGE" value="aggiunta la finestra di arresa" />
   </component>
 </project>
