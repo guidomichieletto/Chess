@@ -45,7 +45,7 @@ public class ChessBoardGUI extends JFrame {
                         options[2]
                 );
 
-                if (result == 0) { // Sì
+                if (result == 0) {
                     try {
                         client.sendMessage("RESIGN");
                         System.exit(0);
@@ -54,8 +54,6 @@ public class ChessBoardGUI extends JFrame {
                     } finally {
                         dispose();
                     }
-                } else if (result == 1) {
-                    // No: non fare nulla
                 } else if (result == 2) {
                     client.sendMessage("DRAW_OFFER");
                 }
