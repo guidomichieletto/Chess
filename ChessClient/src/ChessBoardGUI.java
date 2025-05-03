@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Objects;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -23,9 +24,7 @@ public class ChessBoardGUI extends JFrame {
         this.client = client;
         this.areYouWhite = areYouWhite;
 
-        for (int i = 0; i < arrayMovimento.length; i++) {
-            arrayMovimento[i] = 0;
-        }
+        Arrays.fill(arrayMovimento, 0);
 
         setTitle("Scacchiera");
         setSize(800, 800);
@@ -140,7 +139,7 @@ public class ChessBoardGUI extends JFrame {
     }
 
     private void movePiece(int startX, int startY, int endX, int endY) {
-        client.sendMessage("MOVE," + convertCoordinate(startX) + "," + convertCoordinate(startY) + "," + convertCoordinate(endX) + "," + convertCoordinate(endY));
+        client.sendMessage("MOVE," + startX + "," + startY + "," + endX + "," + endY);
     }
 
     private void initializeBoard(JPanel boardPanel) {
@@ -159,10 +158,10 @@ public class ChessBoardGUI extends JFrame {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         if (arrayMovimento[0] != 0 && arrayMovimento[1] != 0) {
-                            int startX = arrayMovimento[0];
-                            int startY = arrayMovimento[1];
+                            int startX = convertCoordinate(arrayMovimento[0]);
+                            int startY = convertCoordinate(arrayMovimento[1]);
 
-                            movePiece(startX, startY, finalCol, finalRow);
+                            movePiece(startX, startY, convertCoordinate(finalCol), convertCoordinate(finalRow));
 
                             arrayMovimento[0] = 0;
                             arrayMovimento[1] = 0;
@@ -326,7 +325,7 @@ public class ChessBoardGUI extends JFrame {
                     arrayMovimento[0] = col;
                     arrayMovimento[1] = row;
                     square.setBackground(Color.YELLOW);
-                    client.sendMessage("AVAILABLEMOVES," + convertCoordinate(col) + "," + convertCoordinate(row));
+                    client.sendMessage("AVAILABLEMOVES," + convertCoordinate(arrayMovimento[0]) + "," + convertCoordinate(arrayMovimento[1]));
                     return;
                 }
 
@@ -341,7 +340,9 @@ public class ChessBoardGUI extends JFrame {
                         (selectedName.contains("_black") && pieceName.contains("_white"))) {
                     int startX = convertCoordinate(arrayMovimento[0]);
                     int startY = convertCoordinate(arrayMovimento[1]);
+
                     movePiece(startX, startY, convertCoordinate(col), convertCoordinate(row));
+
                     selectedSquare.setBackground(originalColor);
                     selectedSquare = null;
                     selectedName = null;
