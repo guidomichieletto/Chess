@@ -24,7 +24,7 @@ public class ChessBoardGUI extends JFrame {
         this.client = client;
         this.areYouWhite = areYouWhite;
 
-        Arrays.fill(arrayMovimento, 0);
+        Arrays.fill(arrayMovimento, -1);
 
         setTitle("Scacchiera");
         setSize(800, 800);
@@ -219,14 +219,16 @@ public class ChessBoardGUI extends JFrame {
                 square.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        if (arrayMovimento[0] != 0 && arrayMovimento[1] != 0) {
+                        System.out.println("cliccato!");
+                        System.out.println(convertCoordinate(finalCol) + "," + convertCoordinate(finalRow));
+                        if (arrayMovimento[0] != -1 && arrayMovimento[1] != -1) {
                             int startX = convertCoordinate(arrayMovimento[0]);
                             int startY = convertCoordinate(arrayMovimento[1]);
 
                             movePiece(startX, startY, convertCoordinate(finalCol), convertCoordinate(finalRow));
 
-                            arrayMovimento[0] = 0;
-                            arrayMovimento[1] = 0;
+                            arrayMovimento[0] = -1;
+                            arrayMovimento[1] = -1;
 
                             selectedSquare.setBackground(originalColor);
                             selectedSquare = null;
@@ -340,8 +342,8 @@ public class ChessBoardGUI extends JFrame {
                         client.sendMessage("AVAILABLEMOVES," + convertCoordinate(col) + "," + convertCoordinate(row));
                         selectedSquare = null;
                         selectedName = null;
-                        arrayMovimento[0] = 0;
-                        arrayMovimento[1] = 0;
+                        arrayMovimento[0] = -1;
+                        arrayMovimento[1] = -1;
                         return;
                     }
                     selectedSquare = square;
@@ -358,7 +360,7 @@ public class ChessBoardGUI extends JFrame {
                     selectedSquare.setBackground(originalColor);
                     selectedSquare = null;
                     selectedName = null;
-                    arrayMovimento[0] = 0;
+                    arrayMovimento[0] = -1;
                     return;
                 }
                 if ((selectedName.contains("_white") && pieceName.contains("_black")) ||
@@ -371,8 +373,8 @@ public class ChessBoardGUI extends JFrame {
                     selectedSquare.setBackground(originalColor);
                     selectedSquare = null;
                     selectedName = null;
-                    arrayMovimento[0] = 0;
-                    arrayMovimento[1] = 0;
+                    arrayMovimento[0] = -1;
+                    arrayMovimento[1] = -1;
                     resetBoardColors();
                 } else {
                     selectedSquare.setBackground(originalColor);
