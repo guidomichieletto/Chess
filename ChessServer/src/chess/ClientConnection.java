@@ -58,6 +58,7 @@ public class ClientConnection extends Thread {
                     case "RESIGN" -> {
                         out.println("RESIGN");
                         ClientConnection other = (player == Color.WHITE) ? game.getBlack() : game.getWhite();
+                        out.println("LOSE");
                         if (other != null) {
                             other.out.println("WIN");
                         }

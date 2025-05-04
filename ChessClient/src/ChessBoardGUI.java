@@ -46,14 +46,7 @@ public class ChessBoardGUI extends JFrame {
                 );
 
                 if (result == 0) {
-                    try {
-                        client.sendMessage("RESIGN");
-                        System.exit(0);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    } finally {
-                        dispose();
-                    }
+                    client.sendMessage("RESIGN");
                 } else if (result == 2) {
                     client.sendMessage("DRAW_OFFER");
                 }
