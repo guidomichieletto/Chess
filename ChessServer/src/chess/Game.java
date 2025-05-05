@@ -74,6 +74,11 @@ public class Game {
         // Check if the piace can reach the end cell
         if(!board[start.x][start.y].legalMove(start, end)) throw new Exception("Movimento non ammesso");
 
+        // Pawn enpassant
+        if(board[start.x][start.y].getClass() == Pawn.class){
+            ((Pawn) board[start.x][start.y]).enpassantable = (Math.abs(start.y - end.y) == 2);
+        }
+
         board[end.x][end.y] = board[start.x][start.y];
         board[start.x][start.y] = null;
     }

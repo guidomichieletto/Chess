@@ -7,6 +7,8 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Pawn extends Piece {
+    public boolean enpassantable = false;
+
     public Pawn(Game game, Color color) {
         super(game, color, 'P');
     }
@@ -25,6 +27,13 @@ public class Pawn extends Piece {
             if(start.y - 1 >= 0 && start.x - 1 >= 0 && this.getGame().getPiece(start.x - 1, start.y - 1) != null && this.getGame().getPiece(start.x - 1, start.y - 1).getColor() != this.getColor()) {
                 availableMoves.add(new Point(start.x - 1, start.y - 1));
             }
+
+            if(this.getGame().getPiece(start.x + 1, start.y).getClass() == Pawn.class && ((Pawn) this.getGame().getPiece(start.x + 1, start.y)).enpassantable && this.getGame().getPiece(start.x + 1, start.y).getColor() == Color.BLACK) {
+                availableMoves.add(new Point(start.x + 1, start.y));
+            }
+            if(this.getGame().getPiece(start.x - 1, start.y).getClass() == Pawn.class && ((Pawn) this.getGame().getPiece(start.x + 1, start.y)).enpassantable && this.getGame().getPiece(start.x - 1, start.y).getColor() == Color.BLACK) {
+                availableMoves.add(new Point(start.x - 1, start.y));
+            }
         }
 
 
@@ -38,6 +47,13 @@ public class Pawn extends Piece {
             }
             if(start.y + 1 < Game.ROWS && start.x - 1 >= 0 && this.getGame().getPiece(start.x - 1, start.y + 1) != null && this.getGame().getPiece(start.x - 1, start.y + 1).getColor() != this.getColor()) {
                 availableMoves.add(new Point(start.x - 1, start.y + 1));
+            }
+
+            if(this.getGame().getPiece(start.x + 1, start.y).getClass() == Pawn.class && ((Pawn) this.getGame().getPiece(start.x + 1, start.y)).enpassantable && this.getGame().getPiece(start.x + 1, start.y).getColor() == Color.WHITE) {
+                availableMoves.add(new Point(start.x + 1, start.y));
+            }
+            if(this.getGame().getPiece(start.x - 1, start.y).getClass() == Pawn.class && ((Pawn) this.getGame().getPiece(start.x + 1, start.y)).enpassantable && this.getGame().getPiece(start.x - 1, start.y).getColor() == Color.WHITE) {
+                availableMoves.add(new Point(start.x - 1, start.y));
             }
         }
 
