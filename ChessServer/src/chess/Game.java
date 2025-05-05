@@ -81,17 +81,43 @@ public class Game {
 
         board[end.x][end.y] = board[start.x][start.y];
         board[start.x][start.y] = null;
+
+        checkWin();
+    }
+
+    private void checkWin() {
+        boolean whiteKing = false;
+        boolean blackKing = false;
+
+        for(int y = 0; y < board.length; y++) {
+            for(int x = 0; x < board.length; x++) {
+                if(board[x][y] != null) {
+                    if(board[x][y].getClass() == King.class) {
+                        if(board[x][y].getColor() == Color.WHITE) whiteKing = true;
+                        else blackKing = true;
+                    }
+                }
+            }
+        }
+
+        if(!whiteKing) {
+            black.sendTrigger("WIN");
+            white.sendTrigger("LOSE");
+        } else if(!blackKing) {
+            white.sendTrigger("WIN");
+            black.sendTrigger("LOSE");
+        }
     }
 
     public void nextTurn() {
 
         if(currentPlayer == Color.WHITE) {
             currentPlayer = Color.BLACK;
-            black.sendTrigger();
+            black.sendTrigger("YOURTURN");
         }
         else {
             currentPlayer = Color.WHITE;
-            white.sendTrigger();
+            white.sendTrigger("YOURTURN");
         }
     }
 

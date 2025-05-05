@@ -42,7 +42,7 @@ public class ClientConnection extends Thread {
         out.println("STARTED," + player.symbol);
         System.out.println("Started" + player.symbol);
         if (player == Color.WHITE) {
-            sendTrigger();
+            sendTrigger("YOURTURN");
         }
 
         try {
@@ -145,7 +145,7 @@ public class ClientConnection extends Thread {
         }
     }
 
-    public void sendTrigger() {
-        out.println("YOURTURN");
+    public void sendTrigger(String message) {
+        out.println(message);
     }
 }
