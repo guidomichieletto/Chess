@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Objects;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -59,8 +58,10 @@ public class ChessBoardGUI extends JFrame {
         placePieces(boardPanel);
 
         mainPanel = new JPanel(new BorderLayout());
-        mainPanel.add(createRowNumbers(), BorderLayout.WEST);
-        mainPanel.add(createColumnLetters(), BorderLayout.NORTH);
+        mainPanel.add(createRowNumbersWE(), BorderLayout.WEST);
+        mainPanel.add(createRowNumbersES(), BorderLayout.EAST);
+        mainPanel.add(createColumnLettersNO(), BorderLayout.NORTH);
+        mainPanel.add(createColumnLettersSO(), BorderLayout.SOUTH);
         mainPanel.add(boardPanel, BorderLayout.CENTER);
 
         add(mainPanel, BorderLayout.CENTER);
@@ -378,7 +379,7 @@ public class ChessBoardGUI extends JFrame {
         square.add(piece, BorderLayout.CENTER);
     }
 
-    private JPanel createRowNumbers() {
+    private JPanel createRowNumbersWE() {
         JPanel rowLabels = new JPanel(new GridLayout(BOARD_SIZE, 1));
         rowLabels.setBackground(Color.getHSBColor(24f / 360f, 0.69f, 0.64f));
         for (int i = 0; i < BOARD_SIZE; i++) {
@@ -388,8 +389,28 @@ public class ChessBoardGUI extends JFrame {
         }
         return rowLabels;
     }
+    private JPanel createRowNumbersES() {
+        JPanel rowLabels = new JPanel(new GridLayout(BOARD_SIZE, 1));
+        rowLabels.setBackground(Color.getHSBColor(24f / 360f, 0.69f, 0.64f));
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            JLabel label = new JLabel(String.valueOf(i + 1), SwingConstants.CENTER);
+            label.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+            rowLabels.add(label);
+        }
+        return rowLabels;
+    }
 
-    private JPanel createColumnLetters() {
+    private JPanel createColumnLettersNO() {
+        JPanel columnLabels = new JPanel(new GridLayout(1, BOARD_SIZE));
+        columnLabels.setBackground(Color.getHSBColor(24f / 360f, 0.69f, 0.64f));
+        for (char c = 'A'; c < 'A' + BOARD_SIZE; c++) {
+            JLabel label = new JLabel(String.valueOf(c), SwingConstants.CENTER);
+            label.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+            columnLabels.add(label);
+        }
+        return columnLabels;
+    }
+    private JPanel createColumnLettersSO() {
         JPanel columnLabels = new JPanel(new GridLayout(1, BOARD_SIZE));
         columnLabels.setBackground(Color.getHSBColor(24f / 360f, 0.69f, 0.64f));
         for (char c = 'A'; c < 'A' + BOARD_SIZE; c++) {
