@@ -178,7 +178,7 @@ public class ChessBoardGUI extends JFrame {
             promotionScreen.setVisible(true);
             String piece = promotionScreen.getPieceToPromotion();
             if (piece != null) {
-                client.sendMessage("PROM" + getPieceCodeFromImageName(piece));
+                client.sendMessage("PROM," + getPieceCodeFromImageName(piece));
             }
         }
         System.out.println("Messaggio sconosciuto: " + message);
