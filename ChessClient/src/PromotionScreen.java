@@ -48,7 +48,7 @@ public class PromotionScreen extends JFrame {
         square.removeAll();
         square.revalidate();
 
-        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("img/" + pieceName + ".png")));
+        ImageIcon icon = new ImageIcon(getClass().getResource("img/" + pieceName + ".png"));
 
         if (icon.getIconWidth() == -1) {
             System.err.println("Immagine non trovata: " + "img/" + pieceName + ".png");
