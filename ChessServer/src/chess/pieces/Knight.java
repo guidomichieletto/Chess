@@ -24,7 +24,9 @@ public class Knight extends Piece {
             int newY = start.y + move[1];
 
             if (newX >= 0 && newX < Game.COLS && newY >= 0 && newY < Game.ROWS) {
-                availableMoves.add(new Point(newX, newY));
+                if (checkCellColor(newX, newY)) {
+                    availableMoves.add(new Point(newX, newY));
+                }
             }
         }
 
