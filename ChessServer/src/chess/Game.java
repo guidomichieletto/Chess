@@ -92,26 +92,22 @@ public class Game {
     }
 
     private void checkWin() {
-        boolean whiteKing = false;
-        boolean blackKing = false;
-
         for(int y = 0; y < board.length; y++) {
             for(int x = 0; x < board.length; x++) {
                 if(board[x][y] != null) {
-                    if(board[x][y].getClass() == King.class) {
-                        if(board[x][y].getColor() == Color.WHITE) whiteKing = true;
-                        else blackKing = true;
+                    for(Point p : board[x][y].availableMoves(new Point(x, y))) {
+                        if(board[p.x][p.y] instanceof King) {
+                            if(board[x][y].getColor() == Color.WHITE) {
+                                white.sendTrigger("WIN");
+                                black.sendTrigger("LOSE");
+                            } else {
+                                white.sendTrigger("LOSE");
+                                black.sendTrigger("WIN");
+                            }
+                        }
                     }
                 }
             }
-        }
-
-        if(!whiteKing) {
-            black.sendTrigger("WIN");
-            white.sendTrigger("LOSE");
-        } else if(!blackKing) {
-            white.sendTrigger("WIN");
-            black.sendTrigger("LOSE");
         }
     }
 
