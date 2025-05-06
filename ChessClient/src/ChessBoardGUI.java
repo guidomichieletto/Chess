@@ -9,7 +9,6 @@ public class ChessBoardGUI extends JFrame {
     private static final int BOARD_SIZE = 8;
     private boolean areYouWhite = true;
     JPanel boardPanel;
-    JPanel mainPanel;
 
     private JPanel selectedSquare = null;
     private Color originalColor = null;
@@ -57,14 +56,12 @@ public class ChessBoardGUI extends JFrame {
         initializeBoard(boardPanel);
         placePieces(boardPanel);
 
-        mainPanel = new JPanel(new BorderLayout());
-        mainPanel.add(createRowNumbersWE(), BorderLayout.WEST);
-        mainPanel.add(createRowNumbersES(), BorderLayout.EAST);
-        mainPanel.add(createColumnLettersNO(), BorderLayout.NORTH);
-        mainPanel.add(createColumnLettersSO(), BorderLayout.SOUTH);
-        mainPanel.add(boardPanel, BorderLayout.CENTER);
+        add(createRowNumbersWE(), BorderLayout.WEST);
+        add(createRowNumbersES(), BorderLayout.EAST);
+        add(createColumnLettersNO(), BorderLayout.NORTH);
+        add(createColumnLettersSO(), BorderLayout.SOUTH);
+        add(boardPanel, BorderLayout.CENTER);
 
-        add(mainPanel, BorderLayout.CENTER);
         startListeningThread();
     }
     private void startListeningThread() {

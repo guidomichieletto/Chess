@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f83ee9c7-faa9-43d1-8246-ec3e42b64fe3" name="Changes" comment="aggiunto una">
+    <list default="true" id="f83ee9c7-faa9-43d1-8246-ec3e42b64fe3" name="Changes" comment="aggiunta roba per le coordinate">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ChessClient/src/ChessBoardGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/ChessClient/src/ChessBoardGUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -246,7 +247,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746566507054</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="aggiunta roba per le coordinate">
+      <option name="closed" value="true" />
+      <created>1746567098079</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1746567098079</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -264,6 +273,7 @@
     <MESSAGE value="forse funziona" />
     <MESSAGE value="aggiunto una virgola" />
     <MESSAGE value="aggiunto una" />
-    <option name="LAST_COMMIT_MESSAGE" value="aggiunto una" />
+    <MESSAGE value="aggiunta roba per le coordinate" />
+    <option name="LAST_COMMIT_MESSAGE" value="aggiunta roba per le coordinate" />
   </component>
 </project>
