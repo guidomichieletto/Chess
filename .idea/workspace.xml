@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f83ee9c7-faa9-43d1-8246-ec3e42b64fe3" name="Changes" comment="aggiustato enpassant, guido ringraziam">
-      <change beforePath="$PROJECT_DIR$/ChessServer/src/chess/pieces/Knight.java" beforeDir="false" afterPath="$PROJECT_DIR$/ChessServer/src/chess/pieces/Knight.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessServer/src/chess/pieces/Queen.java" beforeDir="false" afterPath="$PROJECT_DIR$/ChessServer/src/chess/pieces/Queen.java" afterDir="false" />
+    <list default="true" id="f83ee9c7-faa9-43d1-8246-ec3e42b64fe3" name="Changes" comment="aggiustato queen e knight, ringraziami guido">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChessClient/src/ChessBoardGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/ChessClient/src/ChessBoardGUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +35,9 @@
     &quot;accountId&quot;: &quot;092aac06-23f8-484f-81c5-104a85ea14f8&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/ChessClient/src/ChessBoardGUI.java" root0="SKIP_INSPECTION" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 8
@@ -49,14 +52,14 @@
     "Application.Main.executor": "Run",
     "Application.MenuGUI.executor": "Run",
     "Application.PromotionScreen.executor": "Run",
-    "Application.client.executor": "Debug",
+    "Application.client.executor": "Run",
     "Application.server.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/cheni/Desktop/programmi/ChessServer",
-    "settings.editor.selected.configurable": "ml.llm.LLMConfigurable"
+    "settings.editor.selected.configurable": "preferences.keymap"
   }
 }]]></component>
   <component name="RunManager" selected="Application.client">
@@ -180,7 +183,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746556123000</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="aggiustato queen e knight, ringraziami guido">
+      <option name="closed" value="true" />
+      <created>1746556542175</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1746556542175</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -193,6 +204,7 @@
     <MESSAGE value="ho cambiato il valore di inizializzazione degli arrayMovimento" />
     <MESSAGE value="aggiustato la resa" />
     <MESSAGE value="aggiustato enpassant, guido ringraziam" />
-    <option name="LAST_COMMIT_MESSAGE" value="aggiustato enpassant, guido ringraziam" />
+    <MESSAGE value="aggiustato queen e knight, ringraziami guido" />
+    <option name="LAST_COMMIT_MESSAGE" value="aggiustato queen e knight, ringraziami guido" />
   </component>
 </project>
