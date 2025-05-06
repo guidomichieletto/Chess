@@ -203,7 +203,6 @@ public class ChessBoardGUI extends JFrame {
                 square.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        System.out.println("cliccato!");
                         System.out.println(convertCoordinate(finalCol) + "," + convertCoordinate(finalRow));
                         if (arrayMovimento[0] != -1 && arrayMovimento[1] != -1) {
                             int startX = convertCoordinate(arrayMovimento[0]);
@@ -267,7 +266,6 @@ public class ChessBoardGUI extends JFrame {
         };
     }
 
-
     private void placePieces(JPanel boardPanel) {
         for (int col = 0; col < BOARD_SIZE; col++) {
             addPieceToSquare(boardPanel, convertCoordinate(1), convertCoordinate(col), "Pawn_black");
@@ -302,7 +300,7 @@ public class ChessBoardGUI extends JFrame {
         square.removeAll();
         square.revalidate();
 
-        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("img/" + pieceName + ".png")));
+        ImageIcon icon = new ImageIcon(getClass().getResource("img/" + pieceName + ".png"));
 
         if (icon.getIconWidth() == -1) {
             System.err.println("Immagine non trovata: " + "img/" + pieceName + ".png");
