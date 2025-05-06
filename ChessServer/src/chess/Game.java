@@ -75,8 +75,14 @@ public class Game {
         if(!board[start.x][start.y].legalMove(start, end)) throw new Exception("Movimento non ammesso");
 
         // Pawn enpassant
-        if(board[start.x][start.y].getClass() == Pawn.class){
-            ((Pawn) board[start.x][start.y]).enpassantable = (Math.abs(start.y - end.y) == 2);
+        if (board[start.x][start.y] instanceof Pawn) {
+            Pawn movingPawn = (Pawn) board[start.x][start.y];
+            movingPawn.enpassantable = (Math.abs(start.y - end.y) == 2);
+
+            if (start.x != end.x && board[end.x][end.y] == null) {
+                int capturedY = (movingPawn.getColor() == Color.WHITE) ? end.y + 1 : end.y - 1;
+                board[end.x][capturedY] = null;
+            }
         }
 
         board[end.x][end.y] = board[start.x][start.y];

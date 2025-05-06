@@ -17,46 +17,64 @@ public class Pawn extends Piece {
         ArrayList<Point> availableMoves = new ArrayList<>();
 
         // White
-        if(this.getColor() == Color.WHITE) {
-            if(start.y == 6 && this.getGame().getPiece(start.x, start.y - 2) == null) availableMoves.add(new Point(start.x, start.y - 2));
-            if(start.y - 1 >= 0 && this.getGame().getPiece(start.x, start.y - 1) == null) availableMoves.add(new Point(start.x, start.y - 1));
+        if (this.getColor() == Color.WHITE) {
+            if (start.y == 6 && this.getGame().getPiece(start.x, start.y - 2) == null && this.getGame().getPiece(start.x, start.y - 1) == null)
+                availableMoves.add(new Point(start.x, start.y - 2));
+            if (start.y - 1 >= 0 && this.getGame().getPiece(start.x, start.y - 1) == null)
+                availableMoves.add(new Point(start.x, start.y - 1));
 
-            if(start.y - 1 >= 0 && start.x + 1 < Game.COLS && this.getGame().getPiece(start.x + 1, start.y - 1) != null && this.getGame().getPiece(start.x + 1, start.y - 1).getColor() != this.getColor()) {
-                availableMoves.add(new Point(start.x + 1, start.y - 1));
+            if (start.y - 1 >= 0 && start.x + 1 < Game.COLS) {
+                Piece p = this.getGame().getPiece(start.x + 1, start.y - 1);
+                if (p != null && p.getColor() != this.getColor())
+                    availableMoves.add(new Point(start.x + 1, start.y - 1));
             }
-            if(start.y - 1 >= 0 && start.x - 1 >= 0 && this.getGame().getPiece(start.x - 1, start.y - 1) != null && this.getGame().getPiece(start.x - 1, start.y - 1).getColor() != this.getColor()) {
-                availableMoves.add(new Point(start.x - 1, start.y - 1));
+            if (start.y - 1 >= 0 && start.x - 1 >= 0) {
+                Piece p = this.getGame().getPiece(start.x - 1, start.y - 1);
+                if (p != null && p.getColor() != this.getColor())
+                    availableMoves.add(new Point(start.x - 1, start.y - 1));
             }
 
-            if(this.getGame().getPiece(start.x + 1, start.y).getClass() == Pawn.class && ((Pawn) this.getGame().getPiece(start.x + 1, start.y)).enpassantable && this.getGame().getPiece(start.x + 1, start.y).getColor() == Color.BLACK) {
-                availableMoves.add(new Point(start.x + 1, start.y));
+            if (start.x + 1 < Game.COLS) {
+                Piece right = this.getGame().getPiece(start.x + 1, start.y);
+                if (right instanceof Pawn && right.getColor() == Color.BLACK && ((Pawn) right).enpassantable)
+                    availableMoves.add(new Point(start.x + 1, start.y - 1));
             }
-            if(this.getGame().getPiece(start.x - 1, start.y).getClass() == Pawn.class && ((Pawn) this.getGame().getPiece(start.x + 1, start.y)).enpassantable && this.getGame().getPiece(start.x - 1, start.y).getColor() == Color.BLACK) {
-                availableMoves.add(new Point(start.x - 1, start.y));
+            if (start.x - 1 >= 0) {
+                Piece left = this.getGame().getPiece(start.x - 1, start.y);
+                if (left instanceof Pawn && left.getColor() == Color.BLACK && ((Pawn) left).enpassantable)
+                    availableMoves.add(new Point(start.x - 1, start.y - 1));
             }
         }
-
 
         // Black
-        if(this.getColor() == Color.BLACK) {
-            if(start.y == 1 && this.getGame().getPiece(start.x, start.y + 2) == null) availableMoves.add(new Point(start.x, start.y + 2));
-            if(start.y + 1 < Game.ROWS && this.getGame().getPiece(start.x, start.y + 1) == null) availableMoves.add(new Point(start.x, start.y + 1));
+        if (this.getColor() == Color.BLACK) {
+            if (start.y == 1 && this.getGame().getPiece(start.x, start.y + 2) == null && this.getGame().getPiece(start.x, start.y + 1) == null)
+                availableMoves.add(new Point(start.x, start.y + 2));
+            if (start.y + 1 < Game.ROWS && this.getGame().getPiece(start.x, start.y + 1) == null)
+                availableMoves.add(new Point(start.x, start.y + 1));
 
-            if(start.y + 1 < Game.ROWS && start.x + 1 < Game.COLS && this.getGame().getPiece(start.x + 1, start.y + 1) != null && this.getGame().getPiece(start.x + 1, start.y + 1).getColor() != this.getColor()) {
-                availableMoves.add(new Point(start.x + 1, start.y + 1));
+            if (start.y + 1 < Game.ROWS && start.x + 1 < Game.COLS) {
+                Piece p = this.getGame().getPiece(start.x + 1, start.y + 1);
+                if (p != null && p.getColor() != this.getColor())
+                    availableMoves.add(new Point(start.x + 1, start.y + 1));
             }
-            if(start.y + 1 < Game.ROWS && start.x - 1 >= 0 && this.getGame().getPiece(start.x - 1, start.y + 1) != null && this.getGame().getPiece(start.x - 1, start.y + 1).getColor() != this.getColor()) {
-                availableMoves.add(new Point(start.x - 1, start.y + 1));
+            if (start.y + 1 < Game.ROWS && start.x - 1 >= 0) {
+                Piece p = this.getGame().getPiece(start.x - 1, start.y + 1);
+                if (p != null && p.getColor() != this.getColor())
+                    availableMoves.add(new Point(start.x - 1, start.y + 1));
             }
 
-            if(this.getGame().getPiece(start.x + 1, start.y).getClass() == Pawn.class && ((Pawn) this.getGame().getPiece(start.x + 1, start.y)).enpassantable && this.getGame().getPiece(start.x + 1, start.y).getColor() == Color.WHITE) {
-                availableMoves.add(new Point(start.x + 1, start.y));
+            if (start.x + 1 < Game.COLS) {
+                Piece right = this.getGame().getPiece(start.x + 1, start.y);
+                if (right instanceof Pawn && right.getColor() == Color.WHITE && ((Pawn) right).enpassantable)
+                    availableMoves.add(new Point(start.x + 1, start.y + 1));
             }
-            if(this.getGame().getPiece(start.x - 1, start.y).getClass() == Pawn.class && ((Pawn) this.getGame().getPiece(start.x + 1, start.y)).enpassantable && this.getGame().getPiece(start.x - 1, start.y).getColor() == Color.WHITE) {
-                availableMoves.add(new Point(start.x - 1, start.y));
+            if (start.x - 1 >= 0) {
+                Piece left = this.getGame().getPiece(start.x - 1, start.y);
+                if (left instanceof Pawn && left.getColor() == Color.WHITE && ((Pawn) left).enpassantable)
+                    availableMoves.add(new Point(start.x - 1, start.y + 1));
             }
         }
-
 
         return availableMoves;
     }
