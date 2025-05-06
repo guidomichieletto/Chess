@@ -105,15 +105,13 @@ public class ChessBoardGUI extends JFrame {
             int response = JOptionPane.showConfirmDialog(this, "Il tuo avversario ha proposto un pareggio. Vuoi accettare?", "Proposta di pareggio", JOptionPane.YES_NO_OPTION);
             if (response == JOptionPane.YES_OPTION) {
                 client.sendMessage("DRAW_ACCEPT");
-                JOptionPane.showMessageDialog(this, "Hai accettato il pareggio!", "Pareggio accettato", JOptionPane.INFORMATION_MESSAGE);
-                System.exit(0);
             } else {
                 client.sendMessage("DRAW_REJECT");
             }
             return;
         }
         if (message.equals("DRAW_ACCEPT")) {
-            JOptionPane.showMessageDialog(this, "Il tuo avversario ha accettato il pareggio!", "Pareggio accettato", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Tu e il tuo avversario avete pareggiato!", "Pareggio accettato", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
             return;
         }
