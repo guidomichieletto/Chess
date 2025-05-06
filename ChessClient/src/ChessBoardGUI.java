@@ -180,6 +180,7 @@ public class ChessBoardGUI extends JFrame {
             if (piece != null) {
                 client.sendMessage("PROM," + getPieceCodeFromImageName(piece));
             }
+            return;
         }
         System.out.println("Messaggio sconosciuto: " + message);
     }
