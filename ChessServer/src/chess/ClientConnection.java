@@ -3,6 +3,7 @@ package chess;
 import java.awt.Point;
 import java.io.*;
 import java.net.Socket;
+import java.util.concurrent.Semaphore;
 
 public class ClientConnection extends Thread {
     private Socket socket;
@@ -17,6 +18,7 @@ public class ClientConnection extends Thread {
         this.game = game;
         this.player = player;
     }
+
     public void sendReadyMessage() {
         out.println("READY");
     }
@@ -87,6 +89,7 @@ public class ClientConnection extends Thread {
                             other.out.println("DRAW_REJECT");
                         }
                     }
+                    case "PROM" -> promote(params[2].charAt(0));
                 }
             }
 
@@ -143,6 +146,10 @@ public class ClientConnection extends Thread {
         } catch (Exception ex) {
             out.println("UNALLOWEDMOVE");
         }
+    }
+
+    private void promote(char pieceType) {
+
     }
 
     public void sendTrigger(String message) {

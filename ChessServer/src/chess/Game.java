@@ -12,6 +12,8 @@ public class Game {
     private Color currentPlayer = Color.WHITE;
     private Piece[][] board = new Piece[COLS][ROWS];
     private Semaphore started = new Semaphore(0);
+    private Semaphore promotionSemaphore = new Semaphore(0);
+    private Point promotion = null;
 
     private ClientConnection white;
     private ClientConnection black;
@@ -85,6 +87,17 @@ public class Game {
             }
         }
 
+        // Pawn promotion
+        if(board[start.x][start.y] instanceof Pawn) {
+            if(board[start.x][start.y].getColor() == Color.WHITE && end.y == 0) {
+                white.sendTrigger("PROMOTION");
+                promotionSemaphore.acquire();
+            } else if(board[start.x][start.y].getColor() == Color.BLACK && end.y == 7) {
+                black.sendTrigger("PROMOTION");
+                promotionSemaphore.acquire();
+            }
+        }
+
         board[end.x][end.y] = board[start.x][start.y];
         board[start.x][start.y] = null;
 
@@ -109,6 +122,24 @@ public class Game {
                 }
             }
         }
+    }
+
+    public void promote(char pieceType) throws Exception {
+        if(promotion == null) throw new Exception("Nessuna promozione in corso");
+
+        Piece newPiece;
+
+        switch (pieceType) {
+            case 'Q' -> newPiece = new Queen(this, board[promotion.x][promotion.y].getColor());
+            case 'R' -> newPiece = new Rook(this, board[promotion.x][promotion.y].getColor());
+            case 'B' -> newPiece = new Bishop(this, board[promotion.x][promotion.y].getColor());
+            case 'N' -> newPiece = new Knight(this, board[promotion.x][promotion.y].getColor());
+            case 'K' -> newPiece = new King(this, board[promotion.x][promotion.y].getColor());
+            case 'P' -> newPiece = new Pawn(this, board[promotion.x][promotion.y].getColor());
+            default -> throw new Exception("Tipo di pedina non valido");
+        }
+
+        board[promotion.x][promotion.y] = newPiece;
     }
 
     public void nextTurn() {
