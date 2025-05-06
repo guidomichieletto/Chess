@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f83ee9c7-faa9-43d1-8246-ec3e42b64fe3" name="Changes" comment="forse funziona">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="f83ee9c7-faa9-43d1-8246-ec3e42b64fe3" name="Changes" comment="aggiunto una virgola">
       <change beforePath="$PROJECT_DIR$/ChessClient/src/ChessBoardGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/ChessClient/src/ChessBoardGUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -215,7 +214,23 @@
       <option name="project" value="LOCAL" />
       <updated>1746563528138</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="aggiunto una virgola">
+      <option name="closed" value="true" />
+      <created>1746565667787</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1746565667787</updated>
+    </task>
+    <task id="LOCAL-00017" summary="aggiunto una virgola">
+      <option name="closed" value="true" />
+      <created>1746565760650</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1746565760650</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -231,6 +246,7 @@
     <MESSAGE value="aggiustato queen e knight, ringraziami guido" />
     <MESSAGE value="provo a fare la promotion" />
     <MESSAGE value="forse funziona" />
-    <option name="LAST_COMMIT_MESSAGE" value="forse funziona" />
+    <MESSAGE value="aggiunto una virgola" />
+    <option name="LAST_COMMIT_MESSAGE" value="aggiunto una virgola" />
   </component>
 </project>

@@ -204,7 +204,6 @@ public class ChessBoardGUI extends JFrame {
                 square.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        System.out.println(convertCoordinate(finalCol) + "," + convertCoordinate(finalRow));
                         if (arrayMovimento[0] != -1 && arrayMovimento[1] != -1) {
                             int startX = convertCoordinate(arrayMovimento[0]);
                             int startY = convertCoordinate(arrayMovimento[1]);
