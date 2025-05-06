@@ -176,8 +176,10 @@ public class ChessBoardGUI extends JFrame {
         if (message.equals("PROMOTION")){
             PromotionScreen promotionScreen = new PromotionScreen(areYouWhite);
             promotionScreen.setVisible(true);
-            client.sendMessage("PROM" + getPieceCodeFromImageName(promotionScreen.getPieceToPromotion()));
-            return;
+            String piece = promotionScreen.getPieceToPromotion();
+            if (piece != null) {
+                client.sendMessage("PROM" + getPieceCodeFromImageName(piece));
+            }
         }
         System.out.println("Messaggio sconosciuto: " + message);
     }
